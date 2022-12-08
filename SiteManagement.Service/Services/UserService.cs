@@ -3,10 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using SiteManagement.Domain.Entities;
 using SiteManagement.Infrastructure.Dtos;
 using SiteManagement.Infrastructure.IServices;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SiteManagement.Service.Services
@@ -22,10 +19,10 @@ namespace SiteManagement.Service.Services
             _mapper = mapper;
         }
 
-        public async Task AddAsync(CreateUserDto userDto,string password)
+        public async Task AddAsync(CreateUserDto userDto)
         {
             var user = _mapper.Map<User>(userDto);
-            await _userManager.CreateAsync(user,password);
+            await _userManager.CreateAsync(user, userDto.Password);
 
         }
 
@@ -59,7 +56,6 @@ namespace SiteManagement.Service.Services
             user.PhoneNumber = userDto.PhoneNumber;
             user.UserName = userDto.UserName;
             user.Email = userDto.Email;
-            user.PasswordHash = userDto.Password;
             await _userManager.UpdateAsync(user);
             return userDto;
 

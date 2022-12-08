@@ -33,9 +33,9 @@ namespace SiteManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddUser(CreateUserDto user,string password)
+        public async Task<IActionResult> AddUser(CreateUserDto user)
         {
-            await _userService.AddAsync(user,password);
+            await _userService.AddAsync(user);
             return Ok();
         }
         [HttpPut("{id}")]

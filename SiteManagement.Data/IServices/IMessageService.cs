@@ -1,4 +1,5 @@
 ﻿using SiteManagement.Infrastructure.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,5 +16,9 @@ namespace SiteManagement.Infrastructure.IServices
         Task RemoveAsync(int id);
 
         UpdateMessageDto Update(UpdateMessageDto messageDto, int id);
+        Task<ICollection<MessageDto>> GetMessageByCreateDate();
+        Task<ICollection<MessageDto>> GetMessageByReceivedId(string id);
+        Task<ICollection<MessageDto>> GetMessageBySendId(string id);
     }
 }
+

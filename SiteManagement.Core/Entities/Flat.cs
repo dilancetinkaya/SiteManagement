@@ -8,6 +8,7 @@ namespace SiteManagement.Domain.Entities
         public int Id { get; set; }
         public byte FlatNumber { get; set; }
         public bool IsEmpty { get; set; }
+        public bool IsOwner { get; set; }
         public string TypeOfFlat { get; set; }
         public byte FloorNumber { get; set; }
         public string UserId { get; set; }
@@ -20,5 +21,6 @@ namespace SiteManagement.Domain.Entities
 
         public ICollection<Expense> Expenses { get; set; }
     }
+
 }
 

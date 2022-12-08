@@ -12,7 +12,7 @@ namespace SiteManagement.Application.Validations
     {
         public BlockValidator()
         {
-
+            RuleFor(x => x.BlockName).NotNull().WithMessage("Block Name can't be null");
         }
     }
 }

@@ -12,7 +12,9 @@ namespace SiteManagement.Application.Validations
     {
         public BuildingValidator()
         {
-
+            RuleFor(b => b.BuildingName).NotNull().WithMessage("");
+            RuleFor(b => b.BuildingName).MaximumLength(1).WithMessage("");
+            RuleFor(b => b.TotalFlat).NotNull().WithMessage("");
         }
     }
 }

@@ -10,7 +10,7 @@ namespace SiteManagement.Infrastructure.IServices
 
         Task<ICollection<UserDto>> GetAllAsync();
 
-        Task AddAsync(CreateUserDto userDto,string password);
+        Task AddAsync(CreateUserDto userDto);
 
         Task RemoveAsync(string id);
 

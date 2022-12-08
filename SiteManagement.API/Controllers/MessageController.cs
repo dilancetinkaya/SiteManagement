@@ -30,6 +30,19 @@ namespace SiteManagement.API.Controllers
             var message = await _messageService.GetByIdAsync(id);
             return Ok(message);
         }
+        [HttpGet("Receiver/{id}")]
+        public IActionResult GetMessageByReceivedId(string id)
+        {
+            var receivedMessages = _messageService.GetMessageByReceivedId(id);
+            return Ok(receivedMessages);
+
+        }
+        [HttpGet("Sender/{id}")]
+        public IActionResult GetMessageBySendId(string id)
+        {
+            var sendMessages = _messageService.GetMessageBySendId(id);
+            return Ok(sendMessages);
+        }
 
         [HttpPost]
         public async Task<IActionResult> AddMessage(CreateMessageDto message)

@@ -10,5 +10,9 @@ namespace SiteManagement.Application.Validations
 {
     public class ExpenseValidator: AbstractValidator<CreateExpenseDto>
     {
+        public ExpenseValidator()
+        {
+            
+        }
     }
 }
