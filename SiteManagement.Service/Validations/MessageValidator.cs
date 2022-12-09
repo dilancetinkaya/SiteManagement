@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace SiteManagement.Application.Validations
 {
-    public class MessageValidator: AbstractValidator<CreateMessageDto>
+    public class MessageValidator : AbstractValidator<CreateMessageDto>
     {
         public MessageValidator()
         {
-
+            RuleFor(x => x.MessageContent).NotNull().WithMessage("{PropertyName} is required")
+                                          .NotEmpty().WithMessage("{PropertyName} is required");
         }
     }
 }

@@ -3,6 +3,7 @@ using SiteManagement.Domain.Entities;
 using SiteManagement.Domain.IRepositories;
 using SiteManagement.Infrastructure.Dtos;
 using SiteManagement.Infrastructure.IServices;
+using SiteManagement.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -24,6 +25,13 @@ namespace SiteManagement.Service.Services
         {
             var expenseType = _mapper.Map<ExpenseType>(expenseTypeDto);
             await _expenseTypeRepository.AddAsync(expenseType);
+        }
+
+        public async Task<ICollection<CreateExpenseTypeDto>> AddRangeAsync(ICollection<CreateExpenseTypeDto> expenseTypeDtos)
+        {
+            var expenseTypes = _mapper.Map<ICollection<ExpenseType>>(expenseTypeDtos);
+            await _expenseTypeRepository.AddRangeAsync(expenseTypes);
+            return expenseTypeDtos;
         }
 
         public async Task<ICollection<ExpenseTypeDto>> GetAllAsync()

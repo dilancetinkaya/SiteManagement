@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using SiteManagement.Domain.Entities;
 using SiteManagement.Infrastructure.Dtos;
 using SiteManagement.Infrastructure.IServices;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -17,12 +18,17 @@ namespace SiteManagement.Service.Services
         {
             _userManager = userManager;
             _mapper = mapper;
+
         }
 
         public async Task AddAsync(CreateUserDto userDto)
         {
             var user = _mapper.Map<User>(userDto);
-            await _userManager.CreateAsync(user, userDto.Password);
+            var addedUser = await _userManager.CreateAsync(user, userDto.Password);
+
+            if (!addedUser.Succeeded) throw new Exception("User can not");
+
+            await _userManager.AddToRoleAsync(user, "User");
 
         }
 
@@ -36,7 +42,17 @@ namespace SiteManagement.Service.Services
         public async Task<UserDto> GetByIdAsync(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
+            if (user != null) throw new Exception("User not found");
+
             return _mapper.Map<UserDto>(user);
+        }
+        public async Task<UserDto> GetByName(string name)
+        {
+            var user = await _userManager.FindByNameAsync(name);
+            if (user != null) throw new Exception("User not found");
+
+            return  _mapper.Map<UserDto>(user);
+            
         }
 
         public async Task RemoveAsync(string id)
@@ -54,8 +70,6 @@ namespace SiteManagement.Service.Services
             user.CarLicensePlate = userDto.CarLicensePlate;
             user.IdentificationNumber = userDto.IdentificationNumber;
             user.PhoneNumber = userDto.PhoneNumber;
-            user.UserName = userDto.UserName;
-            user.Email = userDto.Email;
             await _userManager.UpdateAsync(user);
             return userDto;
 

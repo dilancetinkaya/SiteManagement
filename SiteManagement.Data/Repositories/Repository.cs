@@ -24,6 +24,10 @@ namespace SiteManagement.Infrastructure.Repositories
             await _dbSet.AddAsync(entity);
             _context.SaveChanges();
         }
+        public async Task AddRangeAsync(List<TEntity> entities)
+        {
+            await _dbSet.AddRangeAsync(entities);
+        }
 
         public void Remove(TEntity entity)
         {

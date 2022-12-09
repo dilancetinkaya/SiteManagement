@@ -12,7 +12,9 @@ namespace SiteManagement.Application.Validations
     {
         public FlatValidator()
         {
-
+            RuleFor(x=>x.UserId).NotEmpty().WithMessage("");
+            RuleFor(x=>x.FlatNumber).NotEmpty().WithMessage("");
+            RuleFor(x=>x.TypeOfFlat).NotEmpty().WithMessage("");
         }
     }
 }

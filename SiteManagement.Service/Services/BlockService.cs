@@ -3,6 +3,7 @@ using SiteManagement.Domain.Entities;
 using SiteManagement.Domain.IRepositories;
 using SiteManagement.Infrastructure.Dtos;
 using SiteManagement.Infrastructure.IServices;
+using SiteManagement.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -24,6 +25,14 @@ namespace SiteManagement.Service.Services
         {
             var block = _mapper.Map<Block>(blockDto);
             await _blockRepository.AddAsync(block);
+        }
+
+        public async Task<ICollection<CreateBlockDto>> AddRangeAsync(ICollection<CreateBlockDto> blockDtos)
+        {
+            var blocks = _mapper.Map<ICollection<Block>>(blockDtos);
+            await _blockRepository.AddRangeAsync(blocks);
+            return blockDtos;
+
         }
 
         public async Task<ICollection<BlockDto>> GetAllAsync()

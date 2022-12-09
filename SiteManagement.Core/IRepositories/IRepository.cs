@@ -11,6 +11,7 @@ namespace SiteManagement.Domain.IRepositories
         Task<List<TEntity>> GetAllAsync();
         Task<TEntity> GetByIdAsync(int id);
         Task AddAsync(TEntity entity);
+        Task AddRangeAsync(ICollection<TEntity> entities);
         TEntity Update(TEntity entity);
         void Remove(TEntity entity);
         Task<List<TEntity>> GetWhereAsync(Expression<Func<TEntity, bool>> filter);

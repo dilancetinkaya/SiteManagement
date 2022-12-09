@@ -25,9 +25,5 @@ namespace SiteManagement.Infrastructure.Repositories
             return messagesBySend;
         }
 
-        public Task<ICollection<Message>> GetMessageByCreateDate()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

@@ -3,8 +3,10 @@ using SiteManagement.Domain.Entities;
 using SiteManagement.Domain.IRepositories;
 using SiteManagement.Infrastructure.Dtos;
 using SiteManagement.Infrastructure.IServices;
+using SiteManagement.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SiteManagement.Service.Services
@@ -24,6 +26,13 @@ namespace SiteManagement.Service.Services
         {
             var flat = _mapper.Map<Flat>(flatDto);
             await _flatRepository.AddAsync(flat);
+        }
+
+        public async Task<ICollection<CreateFlatDto>> AddRangeAsync(ICollection<CreateFlatDto> flatDtos)
+        {
+            var flats = _mapper.Map<ICollection<Flat>>(flatDtos);
+            await _flatRepository.AddRangeAsync(flats);
+            return flatDtos;
         }
 
         public async Task<ICollection<FlatDto>> GetAllAsync()
@@ -49,12 +58,28 @@ namespace SiteManagement.Service.Services
             _flatRepository.Remove(flat);
         }
 
-        public UpdateFlatDto Update(UpdateFlatDto flatDto,int id)
+        public UpdateFlatDto Update(UpdateFlatDto flatDto, int id)
         {
             var updatedFlat = _mapper.Map<Flat>(flatDto);
             updatedFlat.Id = id;
             _flatRepository.Update(updatedFlat);
             return flatDto;
+        }
+        public async Task<ICollection<FlatDto>> GetAllFlatsByRelations()
+        {
+            var flats = await _flatRepository.GetAllFlatsByRelations();
+            var flatDtos = flats.Select(f => new FlatDto()
+            {
+                Id = f.Id,
+                FlatNumber = f.FlatNumber,
+                TypeOfFlat = f.TypeOfFlat,
+                IsEmpty = f.IsEmpty,
+                BuildingId = f.BuildingId,
+                UserId = f.UserId,
+                FloorNumber = f.FloorNumber,
+                IsOwner = f.IsOwner,
+            }).ToList();
+            return flatDtos;
         }
     }
 }

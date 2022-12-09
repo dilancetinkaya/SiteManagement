@@ -7,14 +7,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using SiteManagement.API.Middlewares;
+using SiteManagement.Application.Extensions;
 using SiteManagement.Application.Map;
-using SiteManagement.Data.Repositories;
 using SiteManagement.Domain.Entities;
-using SiteManagement.Domain.IRepositories;
 using SiteManagement.Infrastructure.Context;
-using SiteManagement.Infrastructure.IServices;
-using SiteManagement.Infrastructure.Repositories;
-using SiteManagement.Service.Services;
 
 namespace SiteManagement.API
 {
@@ -38,10 +34,13 @@ namespace SiteManagement.API
             });
             services.AddDbContext<AppDbContext>
                (opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            
             services.AddAutoMapper(typeof(MapProfile));
+           
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
+           
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings.
@@ -54,24 +53,8 @@ namespace SiteManagement.API
 
 
             });
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped<IBuildingRepository, BuildingRepository>();
-            services.AddScoped<IBlockRepository, BlockRepository>();
-            services.AddScoped<IExpenseRepository, ExpenseRepository>();
-            services.AddScoped<IExpenseTypeRepository, ExpenseTypeRepository>();
-            services.AddScoped<IFlatRepository, FlatRepository>();
-            services.AddScoped<IMessageRepository, MessageRepository>();
-            services.AddScoped<IRoleRepository, RoleRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.DependencyExtension(Configuration);
 
-           
-            services.AddScoped<IBuildingService, BuildingService>();
-            services.AddScoped<IBlockService, BlockService>();
-            services.AddScoped<IExpenseTypeService, ExpenseTypeService>();
-            services.AddScoped<IExpenseService, ExpenseService>();
-            services.AddScoped<IFlatService, FlatService>();
-            services.AddScoped<IMessageService, MessageService>();
-            services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

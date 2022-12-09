@@ -7,7 +7,8 @@ namespace SiteManagement.Application.Validations
     {
         public ExpenseTypeValidator()
         {
-            RuleFor(x => x.ExpenseTypeName).NotEmpty();
+            RuleFor(x => x.ExpenseTypeName).NotNull().WithMessage("{PropertyName} is required")
+                                           .NotEmpty().WithMessage("{PropertyName} is required");
         }
     }
 }

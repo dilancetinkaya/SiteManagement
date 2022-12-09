@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SiteManagement.Data.Repositories;
 using SiteManagement.Domain.Entities;
 using SiteManagement.Domain.IRepositories;
 using SiteManagement.Infrastructure.Dtos;
@@ -24,6 +25,13 @@ namespace SiteManagement.Service.Services
         {
             var message = _mapper.Map<Message>(messageDto);
             await _messageRepository.AddAsync(message);
+        }
+
+        public async Task<ICollection<CreateMessageDto>> AddRangeAsync(ICollection<CreateMessageDto> messageDtos)
+        {
+            var messages = _mapper.Map<ICollection<Message>>(messageDtos);
+            await _messageRepository.AddRangeAsync(messages);
+            return messageDtos;
         }
 
         public async Task<ICollection<MessageDto>> GetAllAsync()
