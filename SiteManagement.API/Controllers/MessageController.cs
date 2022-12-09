@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SiteManagement.Infrastructure.Dtos;
 using SiteManagement.Infrastructure.IServices;
-using SiteManagement.Service.Services;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SiteManagement.API.Controllers
@@ -17,6 +16,7 @@ namespace SiteManagement.API.Controllers
         {
             _messageService = messageService;
         }
+
         [HttpGet("List")]
         public async Task<IActionResult> GetMessage()
         {
@@ -30,13 +30,14 @@ namespace SiteManagement.API.Controllers
             var message = await _messageService.GetByIdAsync(id);
             return Ok(message);
         }
+
         [HttpGet("Receiver/{id}")]
         public IActionResult GetMessageByReceivedId(string id)
         {
             var receivedMessages = _messageService.GetMessageByReceivedId(id);
             return Ok(receivedMessages);
-
         }
+
         [HttpGet("Sender/{id}")]
         public IActionResult GetMessageBySendId(string id)
         {
@@ -49,6 +50,13 @@ namespace SiteManagement.API.Controllers
         {
             await _messageService.AddAsync(message);
             return Ok(message);
+        }
+
+        [HttpPost("Multiple")]
+        public async Task<IActionResult> AddMessageMultiple(ICollection<CreateMessageDto> messages)
+        {
+            await _messageService.AddRangeAsync(messages);
+            return Ok(messages);
         }
 
         [HttpPut("{id}")]

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SiteManagement.Infrastructure.Dtos;
 using SiteManagement.Infrastructure.IServices;
 using System.Threading.Tasks;
@@ -16,12 +15,12 @@ namespace SiteManagement.API.Controllers
         {
             _userService = userService;
         }
+
         [HttpGet("List")]
         public async Task<IActionResult> GetUser()
         {
             var users = await _userService.GetAllAsync();
             return Ok(users);
-
         }
 
         [HttpGet("{id}")]
@@ -29,7 +28,13 @@ namespace SiteManagement.API.Controllers
         {
             var user = await _userService.GetByIdAsync(id);
             return Ok(user);
+        }
 
+        [HttpGet("{name}")]
+        public async Task<IActionResult> GetUserByName(string name)
+        {
+            var user = await _userService.GetByNameAsync(name);
+            return Ok(user);
         }
 
         [HttpPost]
@@ -38,14 +43,14 @@ namespace SiteManagement.API.Controllers
             await _userService.AddAsync(user);
             return Ok();
         }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(UpdateUserDto user, string id)
         {
             await _userService.UpdateAsync(user, id);
             return Ok();
-
-
         }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(string id)
         {

@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SiteManagement.Infrastructure.Dtos;
 using SiteManagement.Infrastructure.IServices;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SiteManagement.API.Controllers
@@ -36,6 +36,13 @@ namespace SiteManagement.API.Controllers
         {
             await _blockService.AddAsync(block);
             return Ok(block);
+        }
+
+        [HttpPost("Multiple")]
+        public async Task<IActionResult> AddBlockMultiple(ICollection<CreateBlockDto> blocks)
+        {
+            await _blockService.AddRangeAsync(blocks);
+            return Ok(blocks);
         }
 
         [HttpPut("{id}")]

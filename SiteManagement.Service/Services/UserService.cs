@@ -46,7 +46,7 @@ namespace SiteManagement.Service.Services
 
             return _mapper.Map<UserDto>(user);
         }
-        public async Task<UserDto> GetByName(string name)
+        public async Task<UserDto> GetByNameAsync(string name)
         {
             var user = await _userManager.FindByNameAsync(name);
             if (user != null) throw new Exception("User not found");

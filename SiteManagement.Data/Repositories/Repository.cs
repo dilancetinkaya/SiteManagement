@@ -24,7 +24,7 @@ namespace SiteManagement.Infrastructure.Repositories
             await _dbSet.AddAsync(entity);
             _context.SaveChanges();
         }
-        public async Task AddRangeAsync(List<TEntity> entities)
+        public async Task AddRangeAsync(ICollection<TEntity> entities)
         {
             await _dbSet.AddRangeAsync(entities);
         }
@@ -38,7 +38,7 @@ namespace SiteManagement.Infrastructure.Repositories
         public async Task<List<TEntity>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();
-            
+
         }
 
         public async Task<TEntity> GetByIdAsync(int id)
@@ -63,7 +63,7 @@ namespace SiteManagement.Infrastructure.Repositories
 
         public TEntity Update(TEntity entity)
         {
-             _context.Entry(entity).State = EntityState.Modified;
+            _context.Entry(entity).State = EntityState.Modified;
             _context.SaveChanges();
             return entity;
         }

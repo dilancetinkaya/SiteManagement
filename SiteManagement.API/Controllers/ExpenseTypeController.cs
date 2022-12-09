@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SiteManagement.Infrastructure.Dtos;
 using SiteManagement.Infrastructure.IServices;
-using SiteManagement.Service.Services;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SiteManagement.API.Controllers
@@ -17,6 +16,7 @@ namespace SiteManagement.API.Controllers
         {
             _expenseTypeService = expenseTypeService;
         }
+
         [HttpGet("List")]
         public async Task<IActionResult> GetExpenseType()
         {
@@ -36,6 +36,13 @@ namespace SiteManagement.API.Controllers
         {
             await _expenseTypeService.AddAsync(expenseType);
             return Ok(expenseType);
+        }
+
+        [HttpPost("Multiple")]
+        public async Task<IActionResult> AddExpenseTypeMultiple(ICollection<CreateExpenseTypeDto> expenseTypes)
+        {
+            await _expenseTypeService.AddRangeAsync(expenseTypes);
+            return Ok(expenseTypes);
         }
 
         [HttpPut("{id}")]

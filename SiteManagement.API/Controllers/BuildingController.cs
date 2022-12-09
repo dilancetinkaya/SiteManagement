@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SiteManagement.Infrastructure.Dtos;
 using SiteManagement.Infrastructure.IServices;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SiteManagement.API.Controllers
@@ -15,6 +16,7 @@ namespace SiteManagement.API.Controllers
         {
             _buildingService = buildingService;
         }
+
         [HttpGet("List")]
         public async Task<IActionResult> GetBuilding()
         {
@@ -34,6 +36,13 @@ namespace SiteManagement.API.Controllers
         {
             await _buildingService.AddAsync(building);
             return Ok(building);
+        }
+
+        [HttpPost("Multiple")]
+        public async Task<IActionResult> AddBuildingMultiple(ICollection<CreateBuildingDto> buildings)
+        {
+            await _buildingService.AddRangeAsync(buildings);
+            return Ok(buildings);
         }
 
         [HttpPut("{id}")]

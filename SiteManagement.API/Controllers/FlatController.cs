@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using SiteManagement.Domain.IRepositories;
+﻿using Microsoft.AspNetCore.Mvc;
 using SiteManagement.Infrastructure.Dtos;
 using SiteManagement.Infrastructure.IServices;
-using SiteManagement.Service.Services;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SiteManagement.API.Controllers
@@ -18,6 +16,7 @@ namespace SiteManagement.API.Controllers
         {
             _flatService = flatService;
         }
+
         [HttpGet("List")]
         public async Task<IActionResult> GetFlat()
         {
@@ -32,11 +31,25 @@ namespace SiteManagement.API.Controllers
             return Ok(flat);
         }
 
+        [HttpGet("Relation")]
+        public async Task<IActionResult> GetFlatByRelations()
+        {
+            var flats = await _flatService.GetAllFlatsByRelations();
+            return Ok(flats);
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddFlat(CreateFlatDto flat)
         {
             await _flatService.AddAsync(flat);
             return Ok(flat);
+        }
+
+        [HttpPost("Multiple")]
+        public async Task<IActionResult> AddFlatMultiple(ICollection<CreateFlatDto> flats)
+        {
+            await _flatService.AddRangeAsync(flats);
+            return Ok(flats);
         }
 
         [HttpPut("{id}")]

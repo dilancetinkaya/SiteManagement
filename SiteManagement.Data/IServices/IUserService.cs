@@ -7,7 +7,7 @@ namespace SiteManagement.Infrastructure.IServices
     public interface IUserService
     {
         Task<UserDto> GetByIdAsync(string id);
-        Task<UserDto> GetByName(string name);
+        Task<UserDto> GetByNameAsync(string name);
 
         Task<ICollection<UserDto>> GetAllAsync();
 
