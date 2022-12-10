@@ -1,9 +1,9 @@
-﻿using SiteManagement.Infrastructure.Context;
+﻿using Microsoft.EntityFrameworkCore;
 using SiteManagement.Domain.Entities;
 using SiteManagement.Domain.IRepositories;
-using System.Threading.Tasks;
+using SiteManagement.Infrastructure.Context;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace SiteManagement.Infrastructure.Repositories
 {
@@ -19,7 +19,5 @@ namespace SiteManagement.Infrastructure.Repositories
                 .Include(x => x.Flat)
                 .ThenInclude(x => x.User).ToListAsync();
         }
-
     }
 }
-                                                                 

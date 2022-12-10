@@ -12,13 +12,14 @@ namespace SiteManagement.Service.Services
     public class UserService : IUserService
     {
         private readonly UserManager<User> _userManager;
+        private readonly IRoleService _roleService;
         private readonly IMapper _mapper;
 
-        public UserService(UserManager<User> userManager, IMapper mapper)
+        public UserService(UserManager<User> userManager, IMapper mapper, IRoleService roleService)
         {
             _userManager = userManager;
             _mapper = mapper;
-
+            _roleService = roleService;
         }
 
         public async Task AddAsync(CreateUserDto userDto)
@@ -29,7 +30,6 @@ namespace SiteManagement.Service.Services
             if (!addedUser.Succeeded) throw new Exception("User can not");
 
             await _userManager.AddToRoleAsync(user, "User");
-
         }
 
         public async Task<ICollection<UserDto>> GetAllAsync()
@@ -51,8 +51,8 @@ namespace SiteManagement.Service.Services
             var user = await _userManager.FindByNameAsync(name);
             if (user != null) throw new Exception("User not found");
 
-            return  _mapper.Map<UserDto>(user);
-            
+            return _mapper.Map<UserDto>(user);
+
         }
 
         public async Task RemoveAsync(string id)

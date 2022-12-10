@@ -59,7 +59,7 @@ namespace SiteManagement.Service.Services
             _expenseRepository.Remove(expense);
         }
 
-        public UpdateExpenseDto Update(UpdateExpenseDto expenseDto,int id)
+        public UpdateExpenseDto Update(UpdateExpenseDto expenseDto, int id)
         {
             var updatedExpense = _mapper.Map<Expense>(expenseDto);
             updatedExpense.Id = id;
@@ -75,9 +75,9 @@ namespace SiteManagement.Service.Services
                 IsPaid = e.IsPaid,
                 Price = e.Price,
                 InvoiceDate = e.InvoiceDate,
-                ExpenseTypeId= e.ExpenseTypeId,
-                FlatId=e.FlatId,
-               
+                ExpenseTypeId = e.ExpenseTypeId,
+                FlatId = e.FlatId,
+
             }).ToList();
             return expenseDtos;
         }
@@ -94,7 +94,24 @@ namespace SiteManagement.Service.Services
                 IsPaid = false
             }).ToList();
             await AddRangeAsync(expenseDtoList);
-            
+        }
+        public async Task SendMail()
+        {
+            var expenses = await _expenseRepository.GetAllAsync();
+            foreach (var expense in expenses)
+            {
+                if (!expense.IsPaid)
+                {
+                    var email = new Message
+                    {
+                        MessageContent = $" {expense}",
+                        ReceiverId = expense.Flat.UserId,
+                        //SenderId=
+                    };
+                }
+
+            }
+
         }
     }
 }

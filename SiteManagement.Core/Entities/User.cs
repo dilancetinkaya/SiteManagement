@@ -10,6 +10,5 @@ namespace SiteManagement.Domain.Entities
         public string LastName { get; set; }
         public string CarLicensePlate { get; set; }
         public ICollection<Flat> Flats { get; set; }
-
     }
 }

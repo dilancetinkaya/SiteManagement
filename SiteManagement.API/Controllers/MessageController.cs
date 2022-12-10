@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SiteManagement.Infrastructure.Dtos;
 using SiteManagement.Infrastructure.IServices;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -32,16 +33,16 @@ namespace SiteManagement.API.Controllers
         }
 
         [HttpGet("Receiver/{id}")]
-        public IActionResult GetMessageByReceivedId(string id)
+        public IActionResult GetMessageByReceivedId(string id, DateTime? starDate, DateTime? endDate)
         {
-            var receivedMessages = _messageService.GetMessageByReceivedId(id);
+            var receivedMessages = _messageService.GetMessageByReceivedId(id,starDate,endDate);
             return Ok(receivedMessages);
         }
 
         [HttpGet("Sender/{id}")]
-        public IActionResult GetMessageBySendId(string id)
+        public IActionResult GetMessageBySendId(string id, DateTime? starDate, DateTime? endDate)
         {
-            var sendMessages = _messageService.GetMessageBySendId(id);
+            var sendMessages = _messageService.GetMessageBySendId(id,starDate,endDate);
             return Ok(sendMessages);
         }
 

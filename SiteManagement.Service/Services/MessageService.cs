@@ -48,21 +48,17 @@ namespace SiteManagement.Service.Services
             return _mapper.Map<MessageDto>(message);
         }
 
-        public Task<ICollection<MessageDto>> GetMessageByCreateDate()
-        {
-            throw new NotImplementedException();
-        }
 
-        public async Task<ICollection<MessageDto>> GetMessageByReceivedId(string id)
+        public async Task<ICollection<MessageDto>> GetMessageByReceivedId(string id,DateTime? startDate, DateTime? endDate)
         {
-            var receivedMessage =await _messageRepository.GetByReceivedMessage(id);
+            var receivedMessage =await _messageRepository.GetByReceivedMessage(id,startDate,endDate);
             var receivedMessageDto = _mapper.Map<ICollection<MessageDto>>(receivedMessage);
             return receivedMessageDto;
         }
 
-        public async Task<ICollection<MessageDto>> GetMessageBySendId(string id)
+        public async Task<ICollection<MessageDto>> GetMessageBySendId(string id, DateTime? startDate, DateTime? endDate)
         {
-            var sentMessage = await _messageRepository.GetBySendMessage(id);
+            var sentMessage = await _messageRepository.GetBySendMessage(id,startDate,endDate);
             var sentMessageDto = _mapper.Map<ICollection<MessageDto>>(sentMessage);
             return sentMessageDto;
         }

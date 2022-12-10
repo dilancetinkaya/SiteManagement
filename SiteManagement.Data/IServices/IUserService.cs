@@ -8,14 +8,9 @@ namespace SiteManagement.Infrastructure.IServices
     {
         Task<UserDto> GetByIdAsync(string id);
         Task<UserDto> GetByNameAsync(string name);
-
         Task<ICollection<UserDto>> GetAllAsync();
-
         Task AddAsync(CreateUserDto userDto);
-       
         Task RemoveAsync(string id);
-
         Task<UpdateUserDto> UpdateAsync(UpdateUserDto userDto, string id);
-       
     }
 }

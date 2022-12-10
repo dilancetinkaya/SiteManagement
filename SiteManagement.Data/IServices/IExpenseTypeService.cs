@@ -7,14 +7,10 @@ namespace SiteManagement.Infrastructure.IServices
     public interface IExpenseTypeService
     {
         Task<ExpenseTypeDto> GetByIdAsync(int id);
-
         Task<ICollection<ExpenseTypeDto>> GetAllAsync();
-
         Task AddAsync(CreateExpenseTypeDto expenseTypeDto);
         Task<ICollection<CreateExpenseTypeDto>> AddRangeAsync(ICollection<CreateExpenseTypeDto> expenseTypeDtos);
-
         Task RemoveAsync(int id);
-
         UpdateExpenseTypeDto Update(UpdateExpenseTypeDto expenseTypeDto, int id);
     }
 }

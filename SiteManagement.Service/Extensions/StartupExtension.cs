@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SiteManagement.Application.Services;
 using SiteManagement.Data.Repositories;
 using SiteManagement.Domain.IRepositories;
 using SiteManagement.Infrastructure.Context;
@@ -32,6 +33,7 @@ namespace SiteManagement.Application.Extensions
             services.AddScoped<IFlatService, FlatService>();
             services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRoleService, RoleService>();
 
             return services;
         }

@@ -17,9 +17,8 @@ namespace SiteManagement.Infrastructure.IServices
         Task RemoveAsync(int id);
 
         UpdateMessageDto Update(UpdateMessageDto messageDto, int id);
-        Task<ICollection<MessageDto>> GetMessageByCreateDate();
-        Task<ICollection<MessageDto>> GetMessageByReceivedId(string id);
-        Task<ICollection<MessageDto>> GetMessageBySendId(string id);
+        Task<ICollection<MessageDto>> GetMessageByReceivedId(string id, DateTime? starDate, DateTime? endDate);
+        Task<ICollection<MessageDto>> GetMessageBySendId(string id, DateTime? starDate, DateTime? endDate);
     }
 }
 

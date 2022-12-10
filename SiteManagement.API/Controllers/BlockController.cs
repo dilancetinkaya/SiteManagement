@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SiteManagement.API.Filters;
 using SiteManagement.Infrastructure.Dtos;
 using SiteManagement.Infrastructure.IServices;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ namespace SiteManagement.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ValidateFilter]
     public class BlockController : ControllerBase
     {
         private readonly IBlockService _blockService;

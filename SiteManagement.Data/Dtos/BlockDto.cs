@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace SiteManagement.Infrastructure.Dtos
+﻿namespace SiteManagement.Infrastructure.Dtos
 {
     public class BlockDto
     {

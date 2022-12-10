@@ -1,8 +1,4 @@
-﻿using SiteManagement.Domain.Entities;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace SiteManagement.Infrastructure.Dtos
+﻿namespace SiteManagement.Infrastructure.Dtos
 {
     public class FlatDto
     {
@@ -13,7 +9,7 @@ namespace SiteManagement.Infrastructure.Dtos
         public bool IsEmpty { get; set; }
         public bool IsOwner { get; set; }
         public string UserId { get; set; }
-        public int BuildingId{ get; set; }
+        public int BuildingId { get; set; }
     }
 }
 

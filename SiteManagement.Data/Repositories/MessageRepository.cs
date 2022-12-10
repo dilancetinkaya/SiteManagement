@@ -1,10 +1,10 @@
-﻿using SiteManagement.Infrastructure.Context;
-using SiteManagement.Domain.Entities;
+﻿using SiteManagement.Domain.Entities;
 using SiteManagement.Domain.IRepositories;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
+using SiteManagement.Infrastructure.Context;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SiteManagement.Infrastructure.Repositories
 {
@@ -14,10 +14,10 @@ namespace SiteManagement.Infrastructure.Repositories
         {
         }
 
-        public async Task<ICollection<Message>> GetByReceivedMessage(string id,DateTime? starDate, DateTime? endDate)
+        public async Task<ICollection<Message>> GetByReceivedMessage(string id, DateTime? starDate, DateTime? endDate)
         {
-            var messagesByReceiver =  _context.Messages.Where(x => x.Receiver.Id == id).ToList();
-            return  messagesByReceiver;
+            var messagesByReceiver = _context.Messages.Where(x => x.Receiver.Id == id).ToList();
+            return messagesByReceiver;
         }
 
         public async Task<ICollection<Message>> GetBySendMessage(string id, DateTime? starDate, DateTime? endDate)

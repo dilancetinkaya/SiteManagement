@@ -13,6 +13,5 @@ namespace SiteManagement.Domain.Entities
         public virtual User Receiver { get; set; }
         [ForeignKey("SenderId")]
         public virtual User Sender { get; set; }
-
     }
 }

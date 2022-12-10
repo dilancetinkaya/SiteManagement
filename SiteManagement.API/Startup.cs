@@ -1,16 +1,21 @@
+using FluentValidation.AspNetCore;
+using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using SiteManagement.API.Filters;
 using SiteManagement.API.Middlewares;
 using SiteManagement.Application.Extensions;
 using SiteManagement.Application.Map;
 using SiteManagement.Domain.Entities;
 using SiteManagement.Infrastructure.Context;
+using SiteManagement.Service.Services;
 
 namespace SiteManagement.API
 {
@@ -27,20 +32,26 @@ namespace SiteManagement.API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers(opt => opt.Filters.Add(new ValidateFilterAttribute()))
+                .AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<Startup>());
+            services.Configure<ApiBehaviorOptions>(x =>
+            {
+                x.SuppressModelStateInvalidFilter = true;
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SiteManagement.API", Version = "v1" });
             });
             services.AddDbContext<AppDbContext>
                (opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            
+
             services.AddAutoMapper(typeof(MapProfile));
-           
+
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
-           
+
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings.
@@ -53,7 +64,15 @@ namespace SiteManagement.API
 
 
             });
+
+
+            services.Configure<ApiBehaviorOptions>(x =>
+            {
+                x.SuppressModelStateInvalidFilter = true;
+            });
             services.DependencyExtension(Configuration);
+            services.AddHangfire(x => x.UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection")));
+            // RecurringJob.AddOrUpdate<ExpenseService>(emailJob=>emailJob.SendMail(), Cron.Daily());
 
         }
 
@@ -73,7 +92,7 @@ namespace SiteManagement.API
             app.UseExceptionMiddleware();
 
             app.UseAuthorization();
-
+            app.UseHangfireDashboard("/jobs");
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
