@@ -32,7 +32,6 @@ namespace SiteManagement.Service.Services
             var blocks = _mapper.Map<ICollection<Block>>(blockDtos);
             await _blockRepository.AddRangeAsync(blocks);
             return blockDtos;
-
         }
 
         public async Task<ICollection<BlockDto>> GetAllAsync()

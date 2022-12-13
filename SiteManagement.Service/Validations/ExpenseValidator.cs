@@ -7,9 +7,9 @@ namespace SiteManagement.Application.Validations
     {
         public ExpenseValidator()
         {
-            RuleFor(x => x.Price).NotNull().WithMessage("");
-            RuleFor(x => x.ExpenseTypeId).NotNull().WithMessage("");
-            RuleFor(x => x.FlatId).NotNull().WithMessage("");
+            RuleFor(x => x.Price).NotNull();
+            RuleFor(x => x.ExpenseTypeId).NotNull();
+            RuleFor(x => x.FlatId).NotNull();
         }
     }
 }

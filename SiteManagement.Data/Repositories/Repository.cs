@@ -27,6 +27,7 @@ namespace SiteManagement.Infrastructure.Repositories
         public async Task AddRangeAsync(ICollection<TEntity> entities)
         {
             await _dbSet.AddRangeAsync(entities);
+            _context.SaveChanges();
         }
 
         public void Remove(TEntity entity)

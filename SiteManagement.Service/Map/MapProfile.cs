@@ -27,6 +27,7 @@ namespace SiteManagement.Application.Map
             CreateMap<Flat, FlatDto>().ReverseMap();
             CreateMap<Flat, CreateFlatDto>().ReverseMap();
             CreateMap<Flat, UpdateFlatDto>().ReverseMap();
+            CreateMap<Flat, UpdateFlatUserDto>().ReverseMap();
 
             CreateMap<Message, MessageDto>().ReverseMap();
             CreateMap<Message, CreateMessageDto>().ReverseMap();

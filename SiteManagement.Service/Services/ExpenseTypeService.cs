@@ -53,7 +53,7 @@ namespace SiteManagement.Service.Services
             var expenseType = await _expenseTypeRepository.GetByIdAsync(id);
             if (expenseType is null) throw new Exception("ExpenseType is not found");
 
-             _expenseTypeRepository.Remove(expenseType);
+            _expenseTypeRepository.Remove(expenseType);
         }
 
         public UpdateExpenseTypeDto Update(UpdateExpenseTypeDto expenseTypeDto, int id)

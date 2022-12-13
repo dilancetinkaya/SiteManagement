@@ -229,8 +229,8 @@ namespace SiteManagement.Infrastructure.Migrations
                     b.Property<bool>("IsOwner")
                         .HasColumnType("bit");
 
-                    b.Property<string>("TypeOfFlat")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("TypeOfFlat")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -240,6 +240,9 @@ namespace SiteManagement.Infrastructure.Migrations
                     b.HasIndex("BuildingId");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("FlatNumber", "BuildingId")
+                        .IsUnique();
 
                     b.ToTable("Flats");
                 });
@@ -259,6 +262,9 @@ namespace SiteManagement.Infrastructure.Migrations
 
                     b.Property<string>("ReceiverId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("SendDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("SenderId")
                         .HasColumnType("nvarchar(450)");

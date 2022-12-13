@@ -53,13 +53,6 @@ namespace SiteManagement.API.Controllers
             return Ok(message);
         }
 
-        [HttpPost("Multiple")]
-        public async Task<IActionResult> AddMessageMultiple(ICollection<CreateMessageDto> messages)
-        {
-            await _messageService.AddRangeAsync(messages);
-            return Ok(messages);
-        }
-
         [HttpPut("{id}")]
         public IActionResult UpdateMessage(UpdateMessageDto message, int id)
         {

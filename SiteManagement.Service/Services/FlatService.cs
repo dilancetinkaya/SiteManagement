@@ -14,18 +14,26 @@ namespace SiteManagement.Service.Services
     public class FlatService : IFlatService
     {
         private readonly IFlatRepository _flatRepository;
+        private readonly IBuildingService _buildingService;
         private readonly IMapper _mapper;
 
-        public FlatService(IFlatRepository flatRepository, IMapper mapper)
+        public FlatService(IFlatRepository flatRepository, IMapper mapper, IBuildingService buildingService)
         {
             _flatRepository = flatRepository;
+            _buildingService = buildingService;
             _mapper = mapper;
+
         }
 
         public async Task AddAsync(CreateFlatDto flatDto)
         {
-            var flat = _mapper.Map<Flat>(flatDto);
-            await _flatRepository.AddAsync(flat);
+            var building = await _buildingService.GetByIdAsync(flatDto.BuildingId);
+            var totalFlat =(await _flatRepository.GetWhereAsync(x => x.BuildingId == flatDto.BuildingId)).Count();
+            if (building.TotalFlat>totalFlat)
+            {
+                var flat = _mapper.Map<Flat>(flatDto);
+                await _flatRepository.AddAsync(flat);
+            }
         }
 
         public async Task<ICollection<CreateFlatDto>> AddRangeAsync(ICollection<CreateFlatDto> flatDtos)
@@ -80,6 +88,15 @@ namespace SiteManagement.Service.Services
                 IsOwner = f.IsOwner,
             }).ToList();
             return flatDtos;
+        }
+
+        public async Task<UpdateFlatUserDto> UpdateFlatUserAsync(UpdateFlatUserDto flatDto, int id)
+        {
+           var flat=await _flatRepository.GetByIdAsync(id);
+            flat.UserId = flatDto.UserId;
+            flat.IsOwner = flatDto.IsOwner;
+            _flatRepository.Update(flat);
+            return flatDto;
         }
     }
 }

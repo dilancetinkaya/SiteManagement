@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SiteManagement.Domain.Entities
 {
@@ -6,6 +7,7 @@ namespace SiteManagement.Domain.Entities
     {
         public int Id { get; set; }
         public string MessageContent { get; set; }
+        public DateTime SendDate { get; set; }
         public string SenderId { get; set; }
         public bool IsRead { get; set; } = false;
         public string ReceiverId { get; set; }

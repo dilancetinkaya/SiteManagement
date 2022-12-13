@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using MailKit.Net.Smtp;
+using MimeKit;
 using SiteManagement.Domain.Entities;
 using SiteManagement.Domain.IRepositories;
 using SiteManagement.Infrastructure.Dtos;
@@ -81,7 +83,11 @@ namespace SiteManagement.Service.Services
             }).ToList();
             return expenseDtos;
         }
-
+        /// <summary>
+        /// otomatik olarak tüm dairelere borç ekler
+        /// </summary>
+        /// <param name="expenseDto"></param>
+        /// <returns></returns>
         public async Task AddDebtMultiple(CreateExpenseDto expenseDto)
         {
             var flats = _mapper.Map<ICollection<FlatDto>>(await _flatRepository.GetAllAsync());
@@ -95,23 +101,63 @@ namespace SiteManagement.Service.Services
             }).ToList();
             await AddRangeAsync(expenseDtoList);
         }
+
+        public async Task<ICollection<ExpenseDto>> GetExpensesWithUserIdAsync(string id)
+        {
+            var userExpense = await _expenseRepository.GetExpensesWithUserIdAsync(id);
+            var expenseDtos = userExpense.Select(e => new ExpenseDto()
+            {
+                Id = e.Id,
+                IsPaid = e.IsPaid,
+                Price = e.Price,
+                InvoiceDate = e.InvoiceDate,
+                FlatId = e.FlatId,
+                ExpenseTypeId = e.ExpenseTypeId,
+            }).ToList();
+            return expenseDtos;
+        }
+
+
+        //public async Task<ICollection<ExpenseDto>> GetMonthlyDebt(DateTime startDate, DateTime endDate)
+        //{
+        //    var expenses = await _expenseRepository.GetExpensesWithRelations();
+        //    var expensesDate = expenses.Where(x => !x.IsPaid)
+        //                               .Where(x => x.InvoiceDate >= startDate && x.InvoiceDate <= endDate);
+        //    _mapper.Map<ICollection<ExpenseDto>>(expensesDate);
+        //    return expensesDate;
+
+        //}
         public async Task SendMail()
         {
-            var expenses = await _expenseRepository.GetAllAsync();
-            foreach (var expense in expenses)
-            {
-                if (!expense.IsPaid)
-                {
-                    var email = new Message
-                    {
-                        MessageContent = $" {expense}",
-                        ReceiverId = expense.Flat.UserId,
-                        //SenderId=
-                    };
-                }
+            var expenses = await _expenseRepository.GetExpensesWithRelations();
 
+            foreach (var expense in expenses.Where(x => !x.IsPaid))
+            {
+                var email = expense.Flat.User.Email;
+
+                MimeMessage mimeMessage = new MimeMessage();
+                MailboxAddress mailboxAddressFrom = new MailboxAddress("Site Yönetimi", "dilancetinkaya007@gmail.com");
+                mimeMessage.From.Add(mailboxAddressFrom);
+
+                MailboxAddress mailboxAddressTo = new MailboxAddress("User", email);
+                mimeMessage.To.Add(mailboxAddressTo);
+
+                var bodyByilder = new BodyBuilder();
+                bodyByilder.TextBody = "Ödenmemiş Faturanız mecvuttur";
+                mimeMessage.Body = bodyByilder.ToMessageBody();
+                mimeMessage.Subject = "Site Yönetimi";
+
+                SmtpClient client = new SmtpClient();
+                client.Connect("smtp.gmail.com", 587, false);
+                client.Authenticate("dilancetinkaya007@gmail.com", "syfgerdrnqeslexp");
+                client.Send(mimeMessage);
             }
 
+        }
+
+        public Task<ICollection<ExpenseDto>> GetMonthlyDebt(DateTime startDate, DateTime endDate)
+        {
+            throw new NotImplementedException();
         }
     }
 }

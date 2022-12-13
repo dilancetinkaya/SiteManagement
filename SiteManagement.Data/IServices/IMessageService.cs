@@ -12,8 +12,6 @@ namespace SiteManagement.Infrastructure.IServices
         Task<ICollection<MessageDto>> GetAllAsync();
 
         Task AddAsync(CreateMessageDto messageDto);
-        Task<ICollection<CreateMessageDto>> AddRangeAsync(ICollection<CreateMessageDto> messageDtos);
-
         Task RemoveAsync(int id);
 
         UpdateMessageDto Update(UpdateMessageDto messageDto, int id);

@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Hangfire;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SiteManagement.Application.Services;
@@ -8,6 +10,7 @@ using SiteManagement.Infrastructure.Context;
 using SiteManagement.Infrastructure.IServices;
 using SiteManagement.Infrastructure.Repositories;
 using SiteManagement.Service.Services;
+using System;
 
 namespace SiteManagement.Application.Extensions
 {
@@ -17,7 +20,7 @@ namespace SiteManagement.Application.Extensions
         {
             services.AddDbContext<AppDbContext>
               (opt => opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-        
+
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IBuildingRepository, BuildingRepository>();
             services.AddScoped<IBlockRepository, BlockRepository>();
@@ -36,6 +39,25 @@ namespace SiteManagement.Application.Extensions
             services.AddScoped<IRoleService, RoleService>();
 
             return services;
+        }
+        /// <summary>
+        /// Hangfire ile borclarını ödemeyenlere günlük mail atma
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="backgroundJobs"></param>
+        /// <param name="recurringJobManager"></param>
+        /// <param name="serviceProvider"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseApplicationModule(this IApplicationBuilder app,
+            IBackgroundJobClient backgroundJobs, IRecurringJobManager recurringJobManager,
+            IServiceProvider serviceProvider)
+        {
+            backgroundJobs.Enqueue(() => Console.WriteLine("Hello world from Hangfire!"));
+
+            recurringJobManager.AddOrUpdate("ExpenseMail",
+                () => serviceProvider.GetService<IExpenseService>().SendMail(),
+              Cron.Daily); 
+            return app;
         }
     }
 }

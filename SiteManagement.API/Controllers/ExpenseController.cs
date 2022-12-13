@@ -37,6 +37,12 @@ namespace SiteManagement.API.Controllers
             var expense = await _expenseService.GetExpensesWithRelations();
             return Ok(expense);
         }
+        [HttpGet("User{id}")]
+        public async Task<IActionResult> GetExpensesWithUserId(string id)
+        {
+            var expense = await _expenseService.GetExpensesWithUserIdAsync(id);
+            return Ok(expense);
+        }
 
         [HttpPost]
         public async Task<IActionResult> AddExpense(CreateExpenseDto expense)

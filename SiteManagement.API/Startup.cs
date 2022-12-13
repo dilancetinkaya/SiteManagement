@@ -9,13 +9,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using SiteManagement.API.Filters;
 using SiteManagement.API.Middlewares;
 using SiteManagement.Application.Extensions;
 using SiteManagement.Application.Map;
+using SiteManagement.Application.Validations;
 using SiteManagement.Domain.Entities;
 using SiteManagement.Infrastructure.Context;
 using SiteManagement.Service.Services;
+using System;
 
 namespace SiteManagement.API
 {
@@ -31,12 +32,10 @@ namespace SiteManagement.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddControllers(opt => opt.Filters.Add(new ValidateFilterAttribute()))
-                .AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<Startup>());
-            services.Configure<ApiBehaviorOptions>(x =>
+            services.AddControllers().AddFluentValidation(fv =>
             {
-                x.SuppressModelStateInvalidFilter = true;
+                fv.RegisterValidatorsFromAssemblyContaining<BlockValidator>();
+                fv.DisableDataAnnotationsValidation = true;
             });
 
             services.AddSwaggerGen(c =>
@@ -65,19 +64,21 @@ namespace SiteManagement.API
 
             });
 
-
+            services.AddHangfireServer();
             services.Configure<ApiBehaviorOptions>(x =>
             {
                 x.SuppressModelStateInvalidFilter = true;
             });
             services.DependencyExtension(Configuration);
             services.AddHangfire(x => x.UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection")));
-            // RecurringJob.AddOrUpdate<ExpenseService>(emailJob=>emailJob.SendMail(), Cron.Daily());
+
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IBackgroundJobClient backgroundJobs,
+            IRecurringJobManager recurringJobManager, IWebHostEnvironment env,
+            IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -87,12 +88,15 @@ namespace SiteManagement.API
             }
 
             app.UseHttpsRedirection();
+            app.UseHangfireDashboard("/jobs");
+
+            app.UseApplicationModule(backgroundJobs, recurringJobManager, serviceProvider); // Hangfire
 
             app.UseRouting();
             app.UseExceptionMiddleware();
 
             app.UseAuthorization();
-            app.UseHangfireDashboard("/jobs");
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

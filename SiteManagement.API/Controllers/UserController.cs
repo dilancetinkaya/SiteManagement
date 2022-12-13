@@ -30,13 +30,6 @@ namespace SiteManagement.API.Controllers
             return Ok(user);
         }
 
-        [HttpGet("{name}")]
-        public async Task<IActionResult> GetUserByName(string name)
-        {
-            var user = await _userService.GetByNameAsync(name);
-            return Ok(user);
-        }
-
         [HttpPost]
         public async Task<IActionResult> AddUser(CreateUserDto user)
         {

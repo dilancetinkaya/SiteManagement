@@ -10,7 +10,9 @@ namespace SiteManagement.API.Filters
         {
             if (!context.ModelState.IsValid)
             {
-                context.Result = new BadRequestObjectResult(context.ModelState);
+           
+                context.Result = new BadRequestObjectResult(context.ModelState.Values
+                    .SelectMany(e=>e.Errors).Select(e=>e.ErrorMessage));
             }
         }
     }

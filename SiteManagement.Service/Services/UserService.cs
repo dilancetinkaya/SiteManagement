@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SiteManagement.Domain.Entities;
 using SiteManagement.Infrastructure.Dtos;
 using SiteManagement.Infrastructure.IServices;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SiteManagement.Service.Services
@@ -12,14 +14,13 @@ namespace SiteManagement.Service.Services
     public class UserService : IUserService
     {
         private readonly UserManager<User> _userManager;
-        private readonly IRoleService _roleService;
+  
         private readonly IMapper _mapper;
 
-        public UserService(UserManager<User> userManager, IMapper mapper, IRoleService roleService)
+        public UserService(UserManager<User> userManager, IMapper mapper)
         {
             _userManager = userManager;
             _mapper = mapper;
-            _roleService = roleService;
         }
 
         public async Task AddAsync(CreateUserDto userDto)
@@ -34,7 +35,7 @@ namespace SiteManagement.Service.Services
 
         public async Task<ICollection<UserDto>> GetAllAsync()
         {
-            var users = _userManager.Users;
+            var users = await ( _userManager.Users).ToListAsync();
             var usersDto = _mapper.Map<ICollection<UserDto>>(users);
             return usersDto;
         }
@@ -42,14 +43,14 @@ namespace SiteManagement.Service.Services
         public async Task<UserDto> GetByIdAsync(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            if (user != null) throw new Exception("User not found");
+            if (user is null) throw new Exception("User not found");
 
             return _mapper.Map<UserDto>(user);
         }
         public async Task<UserDto> GetByNameAsync(string name)
         {
             var user = await _userManager.FindByNameAsync(name);
-            if (user != null) throw new Exception("User not found");
+            if (user is null) throw new Exception("User not found");
 
             return _mapper.Map<UserDto>(user);
 

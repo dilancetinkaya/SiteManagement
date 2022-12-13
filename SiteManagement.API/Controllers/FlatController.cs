@@ -53,9 +53,15 @@ namespace SiteManagement.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateFlat(UpdateFlatDto flat, int id)
+        public  IActionResult UpdateFlatAsync(UpdateFlatDto flat, int id)
         {
-            _flatService.Update(flat, id);
+             _flatService.Update(flat, id);
+            return Ok();
+        }
+        [HttpPut("User{id}")]
+        public async Task<IActionResult> UpdateUserFlatAsync(UpdateFlatUserDto flat, int id)
+        {
+            await _flatService.UpdateFlatUserAsync(flat, id);
             return Ok();
         }
 

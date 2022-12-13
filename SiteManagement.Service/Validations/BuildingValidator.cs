@@ -10,7 +10,6 @@ namespace SiteManagement.Application.Validations
             RuleFor(b => b.BuildingName).NotNull().WithMessage("{PropertyName} is required")
                                          .NotEmpty().WithMessage("{PropertyName} is required");
 
-            RuleFor(b => b.TotalFlat).NotNull().WithMessage("");
 
         }
     }

@@ -6,6 +6,6 @@ namespace SiteManagement.Domain.IRepositories
 {
     public interface IFlatRepository : IRepository<Flat>
     {
-        Task<List<Flat>> GetAllFlatsByRelations();
+        Task<ICollection<Flat>> GetAllFlatsByRelations();
     }
 }

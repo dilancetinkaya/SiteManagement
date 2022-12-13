@@ -9,7 +9,7 @@ namespace SiteManagement.Domain.Entities
         public byte FlatNumber { get; set; }
         public bool IsEmpty { get; set; }
         public bool IsOwner { get; set; }
-        public string TypeOfFlat { get; set; }//enum 
+        public TypeOfFlat TypeOfFlat { get; set; }
         public byte FloorNumber { get; set; }
         public string UserId { get; set; }
         [ForeignKey("UserId")]
@@ -21,14 +21,13 @@ namespace SiteManagement.Domain.Entities
     }
     public enum TypeOfFlat
     {
-        a=1+0,
-        b = 1+1,
-        c = 2+0,
-        d = 2+1,
-        e = 3+1,
-        f = 3+2,
-        g = 3+3,
-        h = 4+0
+        OnePlusOne,
+        TwoPlusOne,
+        TwoPlusTwo,
+        ThreePlusOne,
+        ThreePlusTwo,
+        ThreePlusThree,
+        FourPlusOne,
     };
 
 }

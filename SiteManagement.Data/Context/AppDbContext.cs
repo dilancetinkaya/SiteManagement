@@ -20,7 +20,8 @@ namespace SiteManagement.Infrastructure.Context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-
+            builder.Entity<Flat>()
+            .HasIndex(p => new { p.FlatNumber, p.BuildingId }).IsUnique();
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(builder);
         }

@@ -13,5 +13,6 @@ namespace SiteManagement.Infrastructure.IServices
         Task<ICollection<FlatDto>> GetAllFlatsByRelations();
         Task RemoveAsync(int id);
         UpdateFlatDto Update(UpdateFlatDto flatDto, int id);
+        Task<UpdateFlatUserDto> UpdateFlatUserAsync(UpdateFlatUserDto flatDto, int id);
     }
 }

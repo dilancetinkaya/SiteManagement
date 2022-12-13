@@ -27,13 +27,6 @@ namespace SiteManagement.Service.Services
             await _messageRepository.AddAsync(message);
         }
 
-        public async Task<ICollection<CreateMessageDto>> AddRangeAsync(ICollection<CreateMessageDto> messageDtos)
-        {
-            var messages = _mapper.Map<ICollection<Message>>(messageDtos);
-            await _messageRepository.AddRangeAsync(messages);
-            return messageDtos;
-        }
-
         public async Task<ICollection<MessageDto>> GetAllAsync()
         {
             var messages = await _messageRepository.GetAllAsync();
@@ -47,7 +40,6 @@ namespace SiteManagement.Service.Services
 
             return _mapper.Map<MessageDto>(message);
         }
-
 
         public async Task<ICollection<MessageDto>> GetMessageByReceivedId(string id,DateTime? startDate, DateTime? endDate)
         {

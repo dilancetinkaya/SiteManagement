@@ -14,7 +14,7 @@ namespace SiteManagement.Data.Repositories
         public FlatRepository(AppDbContext context) : base(context)
         {
         }
-        public async Task<List<Flat>> GetAllFlatsByRelations()
+        public async Task<ICollection<Flat>> GetAllFlatsByRelations()
         {
             return await _context.Flats
                 .Include(x => x.User)

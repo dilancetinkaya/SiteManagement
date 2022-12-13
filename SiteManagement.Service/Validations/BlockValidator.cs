@@ -7,8 +7,7 @@ namespace SiteManagement.Application.Validations
     {
         public BlockValidator()
         {
-            RuleFor(x => x.BlockName).NotNull().WithMessage("{PropertyName} is required")
-                                     .NotEmpty().WithMessage("{PropertyName} is required");
+            RuleFor(x => x.BlockName).NotNull() .NotEmpty();
         }
     }
 }

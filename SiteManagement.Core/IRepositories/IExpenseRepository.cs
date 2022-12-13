@@ -6,6 +6,7 @@ namespace SiteManagement.Domain.IRepositories
 {
     public interface IExpenseRepository : IRepository<Expense>
     {
-        Task<List<Expense>> GetExpensesWithRelations();
+        Task<ICollection<Expense>> GetExpensesWithRelations();
+        Task<ICollection<Expense>> GetExpensesWithUserIdAsync(string id);
     }
 }
