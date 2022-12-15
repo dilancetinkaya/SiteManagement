@@ -88,7 +88,7 @@ namespace SiteManagement.Service.Services
         /// </summary>
         /// <param name="expenseDto"></param>
         /// <returns></returns>
-        public async Task AddDebtMultiple(CreateExpenseDto expenseDto)
+        public async Task AddDebtMultiple(DebtMultipleDto expenseDto)
         {
             var flats = _mapper.Map<ICollection<FlatDto>>(await _flatRepository.GetAllAsync());
             var expenseDtoList = flats.Select(f => new CreateExpenseDto()
@@ -118,15 +118,15 @@ namespace SiteManagement.Service.Services
         }
 
 
-        //public async Task<ICollection<ExpenseDto>> GetMonthlyDebt(DateTime startDate, DateTime endDate)
-        //{
-        //    var expenses = await _expenseRepository.GetExpensesWithRelations();
-        //    var expensesDate = expenses.Where(x => !x.IsPaid)
-        //                               .Where(x => x.InvoiceDate >= startDate && x.InvoiceDate <= endDate);
-        //    _mapper.Map<ICollection<ExpenseDto>>(expensesDate);
-        //    return expensesDate;
+        public async Task<ICollection<ExpenseDto>> GetMonthlyDebt(DateTime startDate, DateTime endDate)
+        {
+            var expenses = await _expenseRepository.GetExpensesWithRelations();
+            var expensesDate = expenses.Where(x => !x.IsPaid)
+                                       .Where(x => x.InvoiceDate >= startDate && x.InvoiceDate <= endDate);
+           var expensesDto= _mapper.Map<ICollection<ExpenseDto>>(expensesDate);
+           return expensesDto;
 
-        //}
+        }
         public async Task SendMail()
         {
             var expenses = await _expenseRepository.GetExpensesWithRelations();
@@ -153,11 +153,6 @@ namespace SiteManagement.Service.Services
                 client.Send(mimeMessage);
             }
 
-        }
-
-        public Task<ICollection<ExpenseDto>> GetMonthlyDebt(DateTime startDate, DateTime endDate)
-        {
-            throw new NotImplementedException();
         }
     }
 }

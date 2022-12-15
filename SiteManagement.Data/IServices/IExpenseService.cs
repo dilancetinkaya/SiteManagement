@@ -1,4 +1,5 @@
-﻿using SiteManagement.Infrastructure.Dtos;
+﻿using SiteManagement.Domain.Entities;
+using SiteManagement.Infrastructure.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace SiteManagement.Infrastructure.IServices
         Task<ICollection<ExpenseDto>> GetExpensesWithUserIdAsync(string id);
         Task<ICollection<ExpenseDto>> GetMonthlyDebt(DateTime startDate,DateTime endDate);
 
-        Task AddDebtMultiple(CreateExpenseDto expenseDto);
+        Task AddDebtMultiple(DebtMultipleDto expenseDto);
         Task AddAsync(CreateExpenseDto expenseDto);
         Task<ICollection<CreateExpenseDto>> AddRangeAsync(ICollection<CreateExpenseDto> expenseDtos);
         Task RemoveAsync(int id);

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SiteManagement.Infrastructure.Dtos;
 using SiteManagement.Infrastructure.IServices;
 using System.Threading.Tasks;
@@ -14,6 +15,30 @@ namespace SiteManagement.API.Controllers
         public UserController(IUserService userService)
         {
             _userService = userService;
+        }
+        [HttpGet("Login")]
+
+        [AllowAnonymous]
+        public IActionResult Login(UserDto user, string password)
+        {
+            var loginUser = _userService.Login(user, password);
+            if (loginUser == null) return BadRequest();
+
+            return Ok(loginUser);
+        }
+        [HttpGet("Logout")]
+        [AllowAnonymous]
+        public IActionResult Logout()
+        {
+            _userService.Logout();
+            return Ok();
+        }
+        [HttpPost("Register")]
+        [AllowAnonymous]
+        public async Task<ActionResult> Register(CreateUserDto user)
+        {
+            await _userService.Register(user);
+            return Ok();
         }
 
         [HttpGet("List")]

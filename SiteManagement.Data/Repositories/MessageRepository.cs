@@ -2,6 +2,7 @@
 using SiteManagement.Domain.Entities;
 using SiteManagement.Domain.IRepositories;
 using SiteManagement.Infrastructure.Context;
+using SiteManagement.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +45,5 @@ namespace SiteManagement.Infrastructure.Repositories
                 .ToListAsync();
             return messagesBySend;
         }
-
     }
 }

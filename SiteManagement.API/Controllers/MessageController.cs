@@ -33,16 +33,16 @@ namespace SiteManagement.API.Controllers
         }
 
         [HttpGet("Receiver/{id}")]
-        public IActionResult GetMessageByReceivedId(string id, DateTime? starDate, DateTime? endDate)
+        public async Task<IActionResult> GetMessageByReceivedIdAsync(string id, DateTime? starDate, DateTime? endDate)
         {
-            var receivedMessages = _messageService.GetMessageByReceivedId(id,starDate,endDate);
+            var receivedMessages =await _messageService.GetMessageByReceivedId(id,starDate,endDate);
             return Ok(receivedMessages);
         }
 
         [HttpGet("Sender/{id}")]
-        public IActionResult GetMessageBySendId(string id, DateTime? starDate, DateTime? endDate)
+        public async Task<IActionResult> GetMessageBySendIdAsync(string id, DateTime? starDate, DateTime? endDate)
         {
-            var sendMessages = _messageService.GetMessageBySendId(id,starDate,endDate);
+            var sendMessages = await _messageService.GetMessageBySendId(id,starDate,endDate);
             return Ok(sendMessages);
         }
 

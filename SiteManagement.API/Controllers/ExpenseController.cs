@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SiteManagement.Infrastructure.Dtos;
 using SiteManagement.Infrastructure.IServices;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -43,6 +44,12 @@ namespace SiteManagement.API.Controllers
             var expense = await _expenseService.GetExpensesWithUserIdAsync(id);
             return Ok(expense);
         }
+        [HttpGet("Debttt")]
+        public async Task<IActionResult> GetMonthlyDebt(DateTime startDate, DateTime endDate)
+        {
+            var expense = await _expenseService.GetMonthlyDebt(startDate,endDate);
+            return Ok(expense);
+        }
 
         [HttpPost]
         public async Task<IActionResult> AddExpense(CreateExpenseDto expense)
@@ -59,7 +66,7 @@ namespace SiteManagement.API.Controllers
         }
 
         [HttpPost("MultipleDebt")]
-        public async Task<IActionResult> AddDebtMultiple(CreateExpenseDto expense)
+        public async Task<IActionResult> AddDebtMultiple(DebtMultipleDto expense)
         {
             await _expenseService.AddDebtMultiple(expense);
             return Ok(expense);

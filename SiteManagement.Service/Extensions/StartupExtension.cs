@@ -52,11 +52,11 @@ namespace SiteManagement.Application.Extensions
             IBackgroundJobClient backgroundJobs, IRecurringJobManager recurringJobManager,
             IServiceProvider serviceProvider)
         {
-            backgroundJobs.Enqueue(() => Console.WriteLine("Hello world from Hangfire!"));
+            //backgroundJobs.Enqueue(() => Console.WriteLine("Hello world from Hangfire!"));
 
-            recurringJobManager.AddOrUpdate("ExpenseMail",
-                () => serviceProvider.GetService<IExpenseService>().SendMail(),
-              Cron.Daily); 
+            //recurringJobManager.AddOrUpdate("ExpenseMail",
+            //    () => serviceProvider.GetService<IExpenseService>().SendMail(),
+            //  Cron.Daily); 
             return app;
         }
     }

@@ -23,6 +23,10 @@ namespace SiteManagement.Service.Services
 
         public async Task AddAsync(CreateMessageDto messageDto)
         {
+            if (true)
+            {
+
+            }
             var message = _mapper.Map<Message>(messageDto);
             await _messageRepository.AddAsync(message);
         }
