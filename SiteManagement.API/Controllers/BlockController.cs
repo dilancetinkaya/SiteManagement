@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SiteManagement.API.Filters;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SiteManagement.Infrastructure.Dtos;
 using SiteManagement.Infrastructure.IServices;
 using System.Collections.Generic;
@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace SiteManagement.API.Controllers
 {
+    [Authorize(Roles = "Admin",AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
-    [ValidateFilter]
     public class BlockController : ControllerBase
     {
         private readonly IBlockService _blockService;

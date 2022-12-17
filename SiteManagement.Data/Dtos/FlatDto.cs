@@ -14,4 +14,3 @@ namespace SiteManagement.Infrastructure.Dtos
         public int BuildingId { get; set; }
     }
 }
-

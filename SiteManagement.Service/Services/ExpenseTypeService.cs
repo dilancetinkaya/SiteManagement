@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Caching.Memory;
 using SiteManagement.Domain.Entities;
 using SiteManagement.Domain.IRepositories;
 using SiteManagement.Infrastructure.Dtos;
 using SiteManagement.Infrastructure.IServices;
-using SiteManagement.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,9 +14,14 @@ namespace SiteManagement.Service.Services
     {
         private readonly IExpenseTypeRepository _expenseTypeRepository;
         private readonly IMapper _mapper;
+        private readonly IMemoryCache _memoryCache;
+        private const string AllExpenseTypeKey = "EXPENSETYPEALL";
+        private MemoryCacheEntryOptions _cacheOptions;
 
-        public ExpenseTypeService(IExpenseTypeRepository expenseTypeRepository, IMapper mapper)
+        public ExpenseTypeService(IExpenseTypeRepository expenseTypeRepository, IMapper mapper, IMemoryCache memoryCache)
         {
+            _memoryCache = memoryCache;
+            _cacheOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(relative: TimeSpan.FromMinutes(10));
             _expenseTypeRepository = expenseTypeRepository;
             _mapper = mapper;
         }
@@ -24,20 +29,29 @@ namespace SiteManagement.Service.Services
         public async Task AddAsync(CreateExpenseTypeDto expenseTypeDto)
         {
             var expenseType = _mapper.Map<ExpenseType>(expenseTypeDto);
+
             await _expenseTypeRepository.AddAsync(expenseType);
+            _memoryCache.Remove(AllExpenseTypeKey);
         }
 
         public async Task<ICollection<CreateExpenseTypeDto>> AddRangeAsync(ICollection<CreateExpenseTypeDto> expenseTypeDtos)
         {
             var expenseTypes = _mapper.Map<ICollection<ExpenseType>>(expenseTypeDtos);
+
             await _expenseTypeRepository.AddRangeAsync(expenseTypes);
+            _memoryCache.Remove(AllExpenseTypeKey);
             return expenseTypeDtos;
         }
 
         public async Task<ICollection<ExpenseTypeDto>> GetAllAsync()
         {
-            var expenseTypes = await _expenseTypeRepository.GetAllAsync();
-            return _mapper.Map<ICollection<ExpenseTypeDto>>(expenseTypes);
+            return await _memoryCache.GetOrCreateAsync(AllExpenseTypeKey, async flatsCache =>
+            {
+                flatsCache.SetOptions(_cacheOptions);
+                var expenseTypes = await _expenseTypeRepository.GetAllAsync();
+
+                return _mapper.Map<ICollection<ExpenseTypeDto>>(expenseTypes);
+            });
         }
 
         public async Task<ExpenseTypeDto> GetByIdAsync(int id)
@@ -54,6 +68,7 @@ namespace SiteManagement.Service.Services
             if (expenseType is null) throw new Exception("ExpenseType is not found");
 
             _expenseTypeRepository.Remove(expenseType);
+            _memoryCache.Remove(AllExpenseTypeKey);
         }
 
         public UpdateExpenseTypeDto Update(UpdateExpenseTypeDto expenseTypeDto, int id)
@@ -61,6 +76,7 @@ namespace SiteManagement.Service.Services
             var updatedExpenseType = _mapper.Map<ExpenseType>(expenseTypeDto);
             updatedExpenseType.Id = id;
             _expenseTypeRepository.Update(updatedExpenseType);
+            _memoryCache.Remove(AllExpenseTypeKey);
             return expenseTypeDto;
         }
     }

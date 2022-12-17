@@ -8,6 +8,7 @@ namespace SiteManagement.Infrastructure.Repositories
     {
         public BlockRepository(AppDbContext context) : base(context)
         {
+
         }
     }
 }

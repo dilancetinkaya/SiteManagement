@@ -28,6 +28,7 @@ namespace PaymentManagement.API
             services.Configure<MongoDbConfiguration>(Configuration.GetSection("MongoDbConfiguration"));
             services.AddScoped<IInvoiceService, InvoiceService>();
             services.AddScoped<ICreditCardInfoService, CreditCardInfoService>();
+            services.AddScoped<IPaymentService, PaymentService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PaymentManagement.API", Version = "v1" });

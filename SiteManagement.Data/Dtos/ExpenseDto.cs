@@ -1,5 +1,4 @@
-﻿using SiteManagement.Domain.Entities;
-using System;
+﻿using System;
 
 namespace SiteManagement.Infrastructure.Dtos
 {

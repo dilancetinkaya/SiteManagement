@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SiteManagement.Domain.Entities;
 using SiteManagement.Infrastructure.IServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SiteManagement.Application.Services
@@ -18,10 +14,13 @@ namespace SiteManagement.Application.Services
             _roleManager = roleManager;
         }
 
-        public async Task AddRole(string name )
+        /// <summary>
+        /// role ekleme
+        /// </summary>
+        public async Task AddRole(string name)
         {
-           await _roleManager.CreateAsync(new Role { Name = name });
-          
+            await _roleManager.CreateAsync(new Role { Name = name });
+
         }
     }
 }

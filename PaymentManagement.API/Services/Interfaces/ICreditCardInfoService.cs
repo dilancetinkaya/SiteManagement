@@ -7,7 +7,7 @@ namespace PaymentManagement.API.Services.Interfaces
 {
     public interface ICreditCardInfoService
     {
-        Task<List<CreditCardInfo>> GetAllAsync();
+        Task<ICollection<CreditCardInfo>> GetAllAsync();
         Task<CreditCardInfo> GetById(string id);
         Task<CreditCardInfo> GetByFilter(CreateInvoicePaymentDto filter);
         Task Add(CreditCardInfo creditCardInfo);

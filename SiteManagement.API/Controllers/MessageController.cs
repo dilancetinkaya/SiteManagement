@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SiteManagement.Infrastructure.Dtos;
 using SiteManagement.Infrastructure.IServices;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SiteManagement.API.Controllers
 {
+   
     [Route("api/[controller]")]
     [ApiController]
     public class MessageController : ControllerBase
@@ -33,16 +34,16 @@ namespace SiteManagement.API.Controllers
         }
 
         [HttpGet("Receiver/{id}")]
-        public async Task<IActionResult> GetMessageByReceivedIdAsync(string id, DateTime? starDate, DateTime? endDate)
+        public async Task<IActionResult> GetMessageByReceivedIdAsync(string id, DateTime? startDate, DateTime? endDate)
         {
-            var receivedMessages =await _messageService.GetMessageByReceivedId(id,starDate,endDate);
+            var receivedMessages =await _messageService.GetMessageByReceivedId(id,startDate,endDate);
             return Ok(receivedMessages);
         }
 
         [HttpGet("Sender/{id}")]
-        public async Task<IActionResult> GetMessageBySendIdAsync(string id, DateTime? starDate, DateTime? endDate)
+        public async Task<IActionResult> GetMessageBySendIdAsync(string id, DateTime? startDate, DateTime? endDate)
         {
-            var sendMessages = await _messageService.GetMessageBySendId(id,starDate,endDate);
+            var sendMessages = await _messageService.GetMessageBySendId(id,startDate,endDate);
             return Ok(sendMessages);
         }
 

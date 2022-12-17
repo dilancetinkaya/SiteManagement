@@ -1,10 +1,8 @@
-using FluentValidation.AspNetCore;
 using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,14 +10,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SiteManagement.API.Middlewares;
+using SiteManagement.Application;
 using SiteManagement.Application.Extensions;
 using SiteManagement.Application.Map;
-using SiteManagement.Application.Validations;
 using SiteManagement.Domain.Entities;
 using SiteManagement.Infrastructure.Context;
-using SiteManagement.Infrastructure.Seeds;
-using SiteManagement.Service.Services;
 using System;
+using System.Reflection;
 using System.Text;
 
 namespace SiteManagement.API
@@ -36,12 +33,10 @@ namespace SiteManagement.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApplicationServices();
+            services.AddControllers().AddWebCore();
 
-            services.AddControllers().AddFluentValidation(fv =>
-            {
-                fv.RegisterValidatorsFromAssemblyContaining<BlockValidator>();
-                fv.DisableDataAnnotationsValidation = true;
-            });
+
 
             services.AddAuthentication(x =>
             {
@@ -94,8 +89,6 @@ namespace SiteManagement.API
             services.AddDbContext<AppDbContext>
                (opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddAutoMapper(typeof(MapProfile));
-
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
@@ -113,11 +106,10 @@ namespace SiteManagement.API
 
             });
 
+
+            services.AddAutoMapper(typeof(MapProfile));
+            services.AddHttpClient();
             services.AddHangfireServer();
-            services.Configure<ApiBehaviorOptions>(x =>
-            {
-                x.SuppressModelStateInvalidFilter = true;
-            });
             services.DependencyExtension(Configuration);
             services.AddHangfire(x => x.UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -134,13 +126,12 @@ namespace SiteManagement.API
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SiteManagement.API v1"));
-               // DataSeeding.Seed(app);  //Uygulama geliþtirme aþamasýnda çaðýrýyoruz. 
             }
 
             app.UseHttpsRedirection();
             app.UseHangfireDashboard("/jobs");
 
-            // app.UseApplicationModule(backgroundJobs, recurringJobManager, serviceProvider); // Hangfire
+            app.UseApplicationModule(backgroundJobs, recurringJobManager, serviceProvider); // Hangfire
 
             app.UseRouting();
             app.UseExceptionMiddleware();

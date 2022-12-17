@@ -149,7 +149,7 @@ namespace SiteManagement.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("BuildingName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<byte>("TotalFlat")
                         .HasColumnType("tinyint");
@@ -157,6 +157,10 @@ namespace SiteManagement.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BlockId");
+
+                    b.HasIndex("BuildingName", "BlockId")
+                        .IsUnique()
+                        .HasFilter("[BuildingName] IS NOT NULL");
 
                     b.ToTable("Buildings");
                 });

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace SiteManagement.API.Controllers
 {
+    //[Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -16,12 +17,12 @@ namespace SiteManagement.API.Controllers
         {
             _userService = userService;
         }
-        [HttpGet("Login")]
+        [HttpPost("Login")]
 
         [AllowAnonymous]
-        public IActionResult Login(UserDto user, string password)
+        public async Task<IActionResult> LoginAsync(LoginUserDto user)
         {
-            var loginUser = _userService.Login(user, password);
+            var loginUser = await _userService.LoginAsync(user);
             if (loginUser == null) return BadRequest();
 
             return Ok(loginUser);
@@ -33,13 +34,7 @@ namespace SiteManagement.API.Controllers
             _userService.Logout();
             return Ok();
         }
-        [HttpPost("Register")]
-        [AllowAnonymous]
-        public async Task<ActionResult> Register(CreateUserDto user)
-        {
-            await _userService.Register(user);
-            return Ok();
-        }
+        
 
         [HttpGet("List")]
         public async Task<IActionResult> GetUser()

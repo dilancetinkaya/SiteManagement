@@ -2,7 +2,6 @@
 using SiteManagement.Domain.Entities;
 using SiteManagement.Domain.IRepositories;
 using SiteManagement.Infrastructure.Context;
-using SiteManagement.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,11 +23,17 @@ namespace SiteManagement.Infrastructure.Repositories
         /// <returns></returns>
         public async Task<ICollection<Message>> GetByReceivedMessage(string id, DateTime? startDate, DateTime? endDate)
         {
-            var messagesByReceiver = await _context.Messages
-                .Where(x => x.Receiver.Id == id)
-                .Where(x=>x.SendDate>=startDate && x.SendDate<=endDate)
-                .ToListAsync();
-            return messagesByReceiver;
+            var messagesByReceiver = _context.Messages.Where(x => x.Receiver.Id == id);
+            if (startDate is not null)
+            {
+                messagesByReceiver = messagesByReceiver.Where(x => x.SendDate >= startDate);
+            }
+            if (endDate is not null)
+            {
+                messagesByReceiver = messagesByReceiver.Where(x => x.SendDate <= endDate);
+            }
+
+            return await messagesByReceiver.ToListAsync();
         }
         /// <summary>
         /// Gönderilen mesajları getirir.opsiyonel olarak belli tarih aralıgında olan measajları getirir
@@ -39,11 +44,16 @@ namespace SiteManagement.Infrastructure.Repositories
         /// <returns></returns>
         public async Task<ICollection<Message>> GetBySendMessage(string id, DateTime? startDate, DateTime? endDate)
         {
-            var messagesBySend = await _context.Messages
-                .Where(x => x.Sender.Id == id)
-                .Where(x => x.SendDate >= startDate && x.SendDate <= endDate)
-                .ToListAsync();
-            return messagesBySend;
+            var messagesBySend = _context.Messages.Where(x => x.Sender.Id == id);
+            if (startDate is not null)
+            {
+                messagesBySend = messagesBySend.Where(x => x.SendDate >= startDate);
+            }
+            if (endDate is not null)
+            {
+                messagesBySend = messagesBySend.Where(x => x.SendDate <= endDate);
+            }
+            return await messagesBySend.ToListAsync();
         }
     }
 }

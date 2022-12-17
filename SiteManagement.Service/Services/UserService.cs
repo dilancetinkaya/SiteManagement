@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using SiteManagement.Application.Jwt;
 using SiteManagement.Domain.Entities;
@@ -19,30 +20,44 @@ namespace SiteManagement.Service.Services
         private readonly SignInManager<User> _signInManager;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
+        private readonly IMemoryCache _memoryCache;
+        private const string AllUserKey = "USERALL";
+        private MemoryCacheEntryOptions _cacheOptions;
+        private readonly RoleManager<Role> _roleManager;
 
-        public UserService(UserManager<User> userManager, IMapper mapper, SignInManager<User> signInManager, IConfiguration configuration)
+        public UserService(UserManager<User> userManager, IMapper mapper, SignInManager<User> signInManager,
+                           IConfiguration configuration, IMemoryCache memoryCache, RoleManager<Role> roleManager)
         {
+            _memoryCache = memoryCache;
+            _cacheOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(relative: TimeSpan.FromMinutes(10));
             _userManager = userManager;
             _mapper = mapper;
             _signInManager = signInManager;
             _configuration = configuration;
+            _roleManager = roleManager;
         }
 
         public async Task AddAsync(CreateUserDto userDto)
         {
             var user = _mapper.Map<User>(userDto);
-            var addedUser = await _userManager.CreateAsync(user, userDto.Password);
 
+            var addedUser = await _userManager.CreateAsync(user, userDto.Password);
             if (!addedUser.Succeeded) throw new Exception("User can not");
 
             await _userManager.AddToRoleAsync(user, "User");
+            _memoryCache.Remove(AllUserKey);
+
         }
 
         public async Task<ICollection<UserDto>> GetAllAsync()
         {
-            var users = await ( _userManager.Users).ToListAsync();
-            var usersDto = _mapper.Map<ICollection<UserDto>>(users);
-            return usersDto;
+            return await _memoryCache.GetOrCreateAsync(AllUserKey, async flatsCache =>
+            {
+                flatsCache.SetOptions(_cacheOptions);
+                var users = await (_userManager.Users).ToListAsync();
+                var usersDto = _mapper.Map<ICollection<UserDto>>(users);
+                return usersDto;
+            });
         }
 
         public async Task<UserDto> GetByIdAsync(string id)
@@ -57,11 +72,13 @@ namespace SiteManagement.Service.Services
         {
             var user = await _userManager.FindByIdAsync(id);
             await _userManager.DeleteAsync(user);
+            _memoryCache.Remove(AllUserKey);
         }
 
         public async Task<UpdateUserDto> UpdateAsync(UpdateUserDto userDto, string id)
         {
             var user = await _userManager.FindByIdAsync(id);
+
             user.Id = id;
             user.FirstName = userDto.FirstName;
             user.LastName = userDto.LastName;
@@ -69,34 +86,33 @@ namespace SiteManagement.Service.Services
             user.IdentificationNumber = userDto.IdentificationNumber;
             user.PhoneNumber = userDto.PhoneNumber;
             await _userManager.UpdateAsync(user);
+            _memoryCache.Remove(AllUserKey);
             return userDto;
         }
 
-        public async Task Register(CreateUserDto user)
+        /// <summary>
+        /// Kullanici login islemi.Kullaniciya token uretilir.
+        /// </summary>
+        public async Task<string> LoginAsync(LoginUserDto user)
         {
-            await _userManager.CreateAsync(
-                          new User
-                          {
-                              Email = user.Email,
-                              FirstName = user.FirstName,
-                              LastName = user.LastName,
-                              UserName = user.UserName,
-                          },user.Password);
+            var signUser = await _signInManager.PasswordSignInAsync(user.Email, user.Password, false, false);
 
-        }
-        public string Login(UserDto user, string password)
-        {
-            _signInManager.PasswordSignInAsync(user.UserName, password, false, false);
-            var token = GenerateJwt.GetJwtToken(user.UserName, _configuration["Jwt:Key"],
-                       _configuration["Jwt:Issuer"], _configuration["Jwt:Audience"], TimeSpan.FromDays(Double.Parse(_configuration["Jwt:ExpirationInDays"]))).ToString();
+
+            if (signUser is null) return string.Empty;
+           var userByEmnail= await _userManager.FindByEmailAsync(user.Email);
+          var userRole= await _userManager.GetRolesAsync(userByEmnail);
+            var token = GenerateJwt.GetJwtToken(user.Email,userRole.First(), _configuration["Jwt:Key"],
+                       _configuration["Jwt:Issuer"], _configuration["Jwt:Audience"],
+                       TimeSpan.FromDays(Double.Parse(_configuration["Jwt:ExpirationInDays"]))).ToString();
             return token;
         }
 
+        /// <summary>
+        /// Kullanici cikis yapar
+        /// </summary>
         public async Task Logout()
         {
-           await _signInManager.SignOutAsync();
+            await _signInManager.SignOutAsync();
         }
-
- 
     }
 }

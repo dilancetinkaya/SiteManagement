@@ -21,7 +21,7 @@ namespace SiteManagement.Infrastructure.Seeds
             var adminUser = new User
             {
                 UserName = "siteadmin",
-                Email = "superadmin@gmail.com",
+                Email = "dilancetinkaya007@gmail.com",
                 FirstName = "Dilan",
                 LastName = "Cetinkaya",
                 EmailConfirmed = true,

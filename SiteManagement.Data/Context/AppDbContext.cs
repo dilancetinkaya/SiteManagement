@@ -24,6 +24,11 @@ namespace SiteManagement.Infrastructure.Context
             .HasIndex(p => new { p.FlatNumber, p.BuildingId }).IsUnique();
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(builder);
+
+            builder.Entity<Building>()
+           .HasIndex(p => new { p.BuildingName, p.BlockId }).IsUnique();
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            base.OnModelCreating(builder);
         }
     }
 }

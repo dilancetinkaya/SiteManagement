@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SiteManagement.Domain.Entities;
+using SiteManagement.Domain.PaymentApiModel;
 using SiteManagement.Infrastructure.Dtos;
 
 namespace SiteManagement.Application.Map
@@ -19,6 +20,7 @@ namespace SiteManagement.Application.Map
             CreateMap<Expense, ExpenseDto>().ReverseMap();
             CreateMap<Expense, CreateExpenseDto>().ReverseMap();
             CreateMap<Expense, UpdateExpenseDto>().ReverseMap();
+            CreateMap<Expense, CreatePaymentDto>().ReverseMap();
 
             CreateMap<ExpenseType, ExpenseTypeDto>().ReverseMap();
             CreateMap<ExpenseType, CreateExpenseTypeDto>().ReverseMap();

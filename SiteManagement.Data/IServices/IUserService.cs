@@ -11,9 +11,7 @@ namespace SiteManagement.Infrastructure.IServices
         Task AddAsync(CreateUserDto userDto);
         Task RemoveAsync(string id);
         Task<UpdateUserDto> UpdateAsync(UpdateUserDto userDto, string id);
-        public string Login(UserDto user, string password);
+        public Task<string> LoginAsync(LoginUserDto user);
         public Task Logout();
-        public Task Register(CreateUserDto user);
-
     }
 }

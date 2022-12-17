@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SiteManagement.Infrastructure.Dtos;
 using SiteManagement.Infrastructure.IServices;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace SiteManagement.API.Controllers
 {
+    //[Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class FlatController : ControllerBase
@@ -55,7 +57,7 @@ namespace SiteManagement.API.Controllers
         [HttpPut("{id}")]
         public  IActionResult UpdateFlatAsync(UpdateFlatDto flat, int id)
         {
-             _flatService.Update(flat, id);
+             _flatService.UpdateAsync(flat, id);
             return Ok();
         }
         [HttpPut("User{id}")]

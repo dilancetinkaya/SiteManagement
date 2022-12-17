@@ -13,6 +13,8 @@ namespace SiteManagement.Data.Repositories
     {
         public FlatRepository(AppDbContext context) : base(context)
         {
+
+
         }
         public async Task<ICollection<Flat>> GetAllFlatsByRelations()
         {

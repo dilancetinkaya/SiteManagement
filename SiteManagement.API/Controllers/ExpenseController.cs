@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SiteManagement.Infrastructure.Dtos;
 using SiteManagement.Infrastructure.IServices;
 using System;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SiteManagement.API.Controllers
 {
+    //    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class ExpenseController : ControllerBase
@@ -38,16 +40,19 @@ namespace SiteManagement.API.Controllers
             var expense = await _expenseService.GetExpensesWithRelations();
             return Ok(expense);
         }
+
+       // [Authorize(Roles = "User")]
         [HttpGet("User{id}")]
         public async Task<IActionResult> GetExpensesWithUserId(string id)
         {
             var expense = await _expenseService.GetExpensesWithUserIdAsync(id);
             return Ok(expense);
         }
+
         [HttpGet("Debttt")]
         public async Task<IActionResult> GetMonthlyDebt(DateTime startDate, DateTime endDate)
         {
-            var expense = await _expenseService.GetMonthlyDebt(startDate,endDate);
+            var expense = await _expenseService.GetDebtWithDate(startDate,endDate);
             return Ok(expense);
         }
 

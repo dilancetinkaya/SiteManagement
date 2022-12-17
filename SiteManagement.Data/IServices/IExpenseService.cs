@@ -1,4 +1,4 @@
-﻿using SiteManagement.Domain.Entities;
+﻿using SiteManagement.Domain.PaymentApiModel;
 using SiteManagement.Infrastructure.Dtos;
 using System;
 using System.Collections.Generic;
@@ -13,10 +13,10 @@ namespace SiteManagement.Infrastructure.IServices
         Task<ICollection<ExpenseDto>> GetAllAsync();
         Task<ICollection<ExpenseDto>> GetExpensesWithRelations();
         Task<ICollection<ExpenseDto>> GetExpensesWithUserIdAsync(string id);
-        Task<ICollection<ExpenseDto>> GetMonthlyDebt(DateTime startDate,DateTime endDate);
-
+        Task<ICollection<ExpenseDto>> GetDebtWithDate(DateTime startDate, DateTime endDate);
         Task AddDebtMultiple(DebtMultipleDto expenseDto);
         Task AddAsync(CreateExpenseDto expenseDto);
+        Task<CreatePaymentDto> AddPayment(CreatePaymentDto createPaymentDto);
         Task<ICollection<CreateExpenseDto>> AddRangeAsync(ICollection<CreateExpenseDto> expenseDtos);
         Task RemoveAsync(int id);
         UpdateExpenseDto Update(UpdateExpenseDto expenseDto, int id);

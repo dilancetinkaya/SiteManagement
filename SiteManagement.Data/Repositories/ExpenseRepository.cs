@@ -20,6 +20,7 @@ namespace SiteManagement.Infrastructure.Repositories
                 .Include(x => x.Flat)
                 .ThenInclude(x => x.User).ToListAsync();
         }
+
         /// <summary>
         /// Kullanıcı id ye göre giderleri ve detaylarını getirir
         /// </summary>
@@ -28,7 +29,7 @@ namespace SiteManagement.Infrastructure.Repositories
         public async Task<ICollection<Expense>> GetExpensesWithUserIdAsync(string userId)
         {
 
-            return await _context.Expenses.Where(x=>x.Flat.UserId==userId)
+            return await _context.Expenses.Where(x => x.Flat.UserId == userId)
                 .Include(x => x.ExpenseType)
                .Include(x => x.Flat)
                .ThenInclude(x => x.User).ToListAsync();

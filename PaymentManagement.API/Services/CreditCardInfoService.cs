@@ -33,7 +33,7 @@ namespace PaymentManagement.API.Services
             await _creditCardInfoCollection.DeleteOneAsync(x => x.Id == id);
         }
 
-        public async Task<List<CreditCardInfo>> GetAllAsync()
+        public async Task<ICollection<CreditCardInfo>> GetAllAsync()
         {
             return await _creditCardInfoCollection.Find(x => true).ToListAsync();
         }

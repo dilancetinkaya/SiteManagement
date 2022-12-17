@@ -12,7 +12,7 @@ namespace SiteManagement.Infrastructure.IServices
         Task<ICollection<CreateFlatDto>> AddRangeAsync(ICollection<CreateFlatDto> flatDtos);
         Task<ICollection<FlatDto>> GetAllFlatsByRelations();
         Task RemoveAsync(int id);
-        UpdateFlatDto Update(UpdateFlatDto flatDto, int id);
+        Task UpdateAsync(UpdateFlatDto flatDto, int id);
         Task<UpdateFlatUserDto> UpdateFlatUserAsync(UpdateFlatUserDto flatDto, int id);
     }
 }
