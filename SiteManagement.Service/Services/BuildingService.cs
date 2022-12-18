@@ -78,6 +78,8 @@ namespace SiteManagement.Service.Services
         {
             var building = await _buildingRepository.GetByIdAsync(id);
 
+            if (building is null) throw new Exception("Building is not found");
+
             building.BuildingName = buildingDto.BuildingName;
             building.TotalFlat = buildingDto.TotalFlat;
             building.BlockId = buildingDto.BlockId;

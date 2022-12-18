@@ -7,9 +7,9 @@ namespace SiteManagement.Application.Validations
     {
         public BlockValidator()
         {
-            RuleFor(x => x.BlockName).MinimumLength(2).WithMessage("Blockname iki karakterdden az olamaz");
-            RuleFor(x => x.BlockName).NotNull().WithMessage("null geçielmez");
-            RuleFor(x => x.BlockName).NotEmpty().WithMessage("boş geçielmez");
+            RuleFor(x => x.BlockName).MinimumLength(2).WithMessage("Block Name must have more than 2 characters");
+            RuleFor(x => x.BlockName).NotNull().WithMessage("Block Name is required");
+            RuleFor(x => x.BlockName).NotEmpty().WithMessage("Block Name is required");
         }
     }
 }

@@ -75,8 +75,10 @@ namespace SiteManagement.Service.Services
         public async Task UpdateAsync(UpdateBlockDto blockDto, int id)
         {
             var block = await _blockRepository.GetByIdAsync(id);
-            block.BlockName=blockDto.BlockName;
 
+            if (block is null) throw new Exception("Block is not found");
+
+            block.BlockName=blockDto.BlockName;
             _blockRepository.Update(block);
             _memoryCache.Remove(AllBlockKey);
         }

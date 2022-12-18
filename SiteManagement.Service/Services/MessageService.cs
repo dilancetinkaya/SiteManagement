@@ -95,6 +95,7 @@ namespace SiteManagement.Service.Services
         public async Task UpdateAsync(UpdateMessageDto messageDto, int id)
         {
             var message = await _messageRepository.GetByIdAsync(id);
+            if (message is null) throw new Exception("Message is not found");
 
             message.MessageContent = messageDto.MessageContent;
             message.IsRead = messageDto.IsRead;

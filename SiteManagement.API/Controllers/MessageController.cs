@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SiteManagement.API.Controllers
 {
-    [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
+    [Authorize(Roles = "Admin,User", AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class MessageController : ControllerBase

@@ -74,8 +74,9 @@ namespace SiteManagement.Service.Services
         public async Task Update(UpdateExpenseTypeDto expenseTypeDto, int id)
         {
             var expenseType = await _expenseTypeRepository.GetByIdAsync(id);
+            if (expenseType is null) throw new Exception("ExpenseType is not found");
+
             expenseType.ExpenseTypeName = expenseTypeDto.ExpenseTypeName;
-           
             _expenseTypeRepository.Update(expenseType);
             _memoryCache.Remove(AllExpenseTypeKey);
             

@@ -94,6 +94,7 @@ namespace SiteManagement.Service.Services
         public async Task UpdateAsync(UpdateExpenseDto expenseDto, int id)
         {
             var expense = await _expenseRepository.GetByIdAsync(id);
+            if (expense is null) throw new Exception("Expense is not found");
 
             expense.Price = expenseDto.Price;
             expense.IsPaid = expenseDto.IsPaid;
@@ -114,6 +115,7 @@ namespace SiteManagement.Service.Services
         public async Task<CreatePaymentDto> AddPayment(CreatePaymentDto createPaymentDto)
         {
             var paidExpense = await _expenseRepository.GetByIdAsync(createPaymentDto.ExpenseId);
+            if (paidExpense is null) throw new Exception("Expense is not found");
 
             createPaymentDto.InvoiceAmount = paidExpense.Price;
             createPaymentDto.FlatId = paidExpense.FlatId;
@@ -226,16 +228,16 @@ namespace SiteManagement.Service.Services
 
 
                 MimeMessage mimeMessage = new();
-                MailboxAddress mailboxAddressFrom = new("Site", "dilancetinkaya007@gmail.com");
+                MailboxAddress mailboxAddressFrom = new("Site Administrator", "dilancetinkaya007@gmail.com");
                 mimeMessage.From.Add(mailboxAddressFrom);
 
                 MailboxAddress mailboxAddressTo = new("User", email);
                 mimeMessage.To.Add(mailboxAddressTo);
 
                 var bodyByilder = new BodyBuilder();
-                bodyByilder.TextBody = $"{expenseType} {expense.Price} tutarında ödenmemiş Faturanız mecvuttur";
+                bodyByilder.TextBody = $"You have an unpaid {expenseType} bill of {expense.Price} TL";
                 mimeMessage.Body = bodyByilder.ToMessageBody();
-                mimeMessage.Subject = "Site Yönetimi";
+                mimeMessage.Subject = "Unpaid Bill Reminder";
 
                 SmtpClient client = new();
                 client.Connect("smtp.gmail.com", 587, false);

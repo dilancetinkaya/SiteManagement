@@ -41,7 +41,7 @@ namespace SiteManagement.Service.Services
             var user = _mapper.Map<User>(userDto);
 
             var addedUser = await _userManager.CreateAsync(user, userDto.Password);
-            if (!addedUser.Succeeded) throw new Exception("User can not");
+            if (!addedUser.Succeeded) throw new Exception("User can not be created");
 
             await _userManager.AddToRoleAsync(user, "User");
             _memoryCache.Remove(AllUserKey);
@@ -62,7 +62,7 @@ namespace SiteManagement.Service.Services
         public async Task<UserDto> GetByIdAsync(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            if (user is null) throw new Exception("User not found");
+            if (user is null) throw new Exception("User is not found");
 
             return _mapper.Map<UserDto>(user);
         }
@@ -70,6 +70,8 @@ namespace SiteManagement.Service.Services
         public async Task RemoveAsync(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
+            if (user is null) throw new Exception("User is not found");
+
             await _userManager.DeleteAsync(user);
             _memoryCache.Remove(AllUserKey);
         }
@@ -77,6 +79,7 @@ namespace SiteManagement.Service.Services
         public async Task<UpdateUserDto> UpdateAsync(UpdateUserDto userDto, string id)
         {
             var user = await _userManager.FindByIdAsync(id);
+            if (user is null) throw new Exception("User is not found");
 
             user.Id = id;
             user.FirstName = userDto.FirstName;

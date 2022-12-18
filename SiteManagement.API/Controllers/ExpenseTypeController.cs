@@ -40,7 +40,7 @@ namespace SiteManagement.API.Controllers
             return Ok(expenseType);
         }
 
-        [HttpPost("Multiple")]
+        [HttpPost("Bulk")]
         public async Task<IActionResult> AddExpenseTypeMultiple(ICollection<CreateExpenseTypeDto> expenseTypes)
         {
             await _expenseTypeService.AddRangeAsync(expenseTypes);

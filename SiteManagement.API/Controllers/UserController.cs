@@ -34,7 +34,7 @@ namespace SiteManagement.API.Controllers
             _userService.Logout();
             return Ok();
         }
-        
+
 
         [HttpGet("List")]
         public async Task<IActionResult> GetUser()

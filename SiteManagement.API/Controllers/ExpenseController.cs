@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SiteManagement.API.Controllers
 {
-    [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
+
     [Route("api/[controller]")]
     [ApiController]
     public class ExpenseController : ControllerBase
@@ -20,6 +20,7 @@ namespace SiteManagement.API.Controllers
             _expenseService = expenseService;
         }
 
+        [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
         [HttpGet("List")]
         public async Task<IActionResult> GetExpense()
         {
@@ -27,6 +28,7 @@ namespace SiteManagement.API.Controllers
             return Ok(expenses);
         }
 
+        [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetExpenseById(int id)
         {
@@ -34,28 +36,31 @@ namespace SiteManagement.API.Controllers
             return Ok(expense);
         }
 
-        [HttpGet("Relation")]
+        [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
+        [HttpGet("Relations")]
         public async Task<IActionResult> GetExpensesWithRelations()
         {
             var expense = await _expenseService.GetExpensesWithRelations();
             return Ok(expense);
         }
 
-        [Authorize(Roles = "User", AuthenticationSchemes = "Bearer")]
-        [HttpGet("User{id}")]
+        [Authorize(Roles = "Admin,User", AuthenticationSchemes = "Bearer")]
+        [HttpGet("Users/{id}")]
         public async Task<IActionResult> GetExpensesWithUserId(string id)
         {
             var expense = await _expenseService.GetExpensesWithUserIdAsync(id);
             return Ok(expense);
         }
 
-        [HttpGet("Debttt")]
-        public async Task<IActionResult> GetMonthlyDebt(DateTime startDate, DateTime endDate)
+        [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
+        [HttpGet("Date")]
+        public async Task<IActionResult> GetDebtWithDate(DateTime startDate, DateTime endDate)
         {
             var expense = await _expenseService.GetDebtWithDate(startDate, endDate);
             return Ok(expense);
         }
 
+        [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
         [HttpPost]
         public async Task<IActionResult> AddExpense(CreateExpenseDto expense)
         {
@@ -63,20 +68,23 @@ namespace SiteManagement.API.Controllers
             return Ok(expense);
         }
 
-        [HttpPost("Multiple")]
+        [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
+        [HttpPost("Bulk")]
         public async Task<IActionResult> AddExpenseMultiple(ICollection<CreateExpenseDto> expenses)
         {
             await _expenseService.AddRangeAsync(expenses);
             return Ok(expenses);
         }
 
-        [HttpPost("MultipleDebt")]
+        [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
+        [HttpPost("UsersDebt")]
         public async Task<IActionResult> AddDebtMultiple(DebtMultipleDto expense)
         {
             await _expenseService.AddDebtMultiple(expense);
             return Ok(expense);
         }
 
+        [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateExpenseAsync(UpdateExpenseDto expense, int id)
         {
@@ -84,6 +92,7 @@ namespace SiteManagement.API.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteExpense(int id)
         {

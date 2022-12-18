@@ -36,7 +36,7 @@ namespace SiteManagement.Service.Services
             var building = await _buildingService.GetByIdAsync(flatDto.BuildingId);
 
             var totalFlat = (await _flatRepository.GetWhereAsync(x => x.BuildingId == flatDto.BuildingId)).Count();
-            if (building.TotalFlat< totalFlat) throw new Exception("Flat is full");
+            if (building.TotalFlat< totalFlat) throw new Exception("Building is full, no more flats can be added");
 
             var flat = _mapper.Map<Flat>(flatDto);
             await _flatRepository.AddAsync(flat);
@@ -116,10 +116,11 @@ namespace SiteManagement.Service.Services
         public async Task UpdateAsync(UpdateFlatDto flatDto, int id)
         {
             var flat = await _flatRepository.GetByIdAsync(id);
+            if (flat is null) throw new Exception("Flat is not found");
+
             flat.FloorNumber = flatDto.FlatNumber;
             flat.IsOwner = flatDto.IsOwner;
             flat.IsEmpty = flatDto.IsEmpty;
-           
             _flatRepository.Update(flat);
             _memoryCache.Remove(FlatsByRelationsKey);
             _memoryCache.Remove(AllFlatsKey);
@@ -132,6 +133,8 @@ namespace SiteManagement.Service.Services
         public async Task UpdateFlatUserAsync(UpdateFlatUserDto flatDto, int id)
         {
             var flat = await _flatRepository.GetByIdAsync(id);
+            if (flat is null) throw new Exception("Flat is not found");
+
             flat.UserId = flatDto.UserId;
             flat.IsOwner = flatDto.IsOwner;
             _flatRepository.Update(flat);

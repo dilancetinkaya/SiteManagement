@@ -40,7 +40,7 @@ namespace SiteManagement.API.Controllers
             return Ok(block);
         }
 
-        [HttpPost("Multiple")]
+        [HttpPost("Bulk")]
         public async Task<IActionResult> AddBlockMultiple(ICollection<CreateBlockDto> blocks)
         {
             await _blockService.AddRangeAsync(blocks);

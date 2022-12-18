@@ -33,11 +33,11 @@ namespace PaymentManagement.API.Services
 
             if (creditCardResult == null)
             {
-                return InternalServerError("Geçersiz kredi kartı/ Kredi kartı bulunamadı.");
+                return InternalServerError("Invalid Credit Card / Credit Card is not found.");
             }
             if (creditCardResult.Balance <= createPaymentDto.InvoiceAmount)
             {
-                return InternalServerError("Yetersiz bakiye.");
+                return InternalServerError("Insufficient Balance.");
             }
             var createInvoicePayment = new InvoicePayment()
             {
@@ -85,7 +85,7 @@ namespace PaymentManagement.API.Services
             return new ApiResponse<string>
             {
                 Data = data,
-                Message = "İşlem başarılı",
+                Message = "Operation is successful",
                 StatusCode = StatusCodes.Status200OK
             };
         }

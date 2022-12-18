@@ -47,7 +47,7 @@ namespace SiteManagement.API.Controllers
             return Ok(flat);
         }
 
-        [HttpPost("Multiple")]
+        [HttpPost("Bulk")]
         public async Task<IActionResult> AddFlatMultiple(ICollection<CreateFlatDto> flats)
         {
             await _flatService.AddRangeAsync(flats);
@@ -60,7 +60,7 @@ namespace SiteManagement.API.Controllers
             await _flatService.UpdateAsync(flat, id);
             return Ok();
         }
-        [HttpPut("User{id}")]
+        [HttpPut("Users/{id}")]
         public async Task<IActionResult> UpdateUserFlatAsync(UpdateFlatUserDto flat, int id)
         {
             await _flatService.UpdateFlatUserAsync(flat, id);
