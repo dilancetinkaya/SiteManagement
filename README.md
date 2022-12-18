@@ -1,5 +1,8 @@
 # Site Management
 
+![](https://i.pinimg.com/564x/8c/d6/2e/8cd62ee336dce24c2db39cb29db10dac.jpg)
+
+
 Site Management, site yöneticilerinin hayatlarını kolaylaştırmayı hedefleyen bir projedir. Sitelerde yer alan dairelerin aidat ve ortak kullanım elektrik, su ve doğalgaz faturalarının yönetimini bir sistem üzerinden mümkün kılmaktadır. Projenin içerisinde iki farklı kullanıcı tipi bulunmakta ve proje bu kullanıcı tiplerine göre belli özellikler barındırmakta. 
  
 ## :pouting_man: Kullanıcı Tipleri
