@@ -19,6 +19,6 @@ namespace SiteManagement.Infrastructure.IServices
         Task<CreatePaymentDto> AddPayment(CreatePaymentDto createPaymentDto);
         Task<ICollection<CreateExpenseDto>> AddRangeAsync(ICollection<CreateExpenseDto> expenseDtos);
         Task RemoveAsync(int id);
-        UpdateExpenseDto Update(UpdateExpenseDto expenseDto, int id);
+        Task UpdateAsync(UpdateExpenseDto expenseDto, int id);
     }
 }

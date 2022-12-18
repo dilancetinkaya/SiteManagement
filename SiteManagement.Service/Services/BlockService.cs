@@ -72,14 +72,13 @@ namespace SiteManagement.Service.Services
             _memoryCache.Remove(AllBlockKey);
         }
 
-        public UpdateBlockDto Update(UpdateBlockDto blockDto, int id)
+        public async Task UpdateAsync(UpdateBlockDto blockDto, int id)
         {
-            var updatedBlock = _mapper.Map<Block>(blockDto);
+            var block = await _blockRepository.GetByIdAsync(id);
+            block.BlockName=blockDto.BlockName;
 
-            updatedBlock.Id = id;
-            _blockRepository.Update(updatedBlock);
+            _blockRepository.Update(block);
             _memoryCache.Remove(AllBlockKey);
-            return blockDto;
         }
     }
 }

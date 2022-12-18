@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SiteManagement.API.Controllers
 {
-    //    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class ExpenseController : ControllerBase
@@ -41,7 +41,7 @@ namespace SiteManagement.API.Controllers
             return Ok(expense);
         }
 
-       // [Authorize(Roles = "User")]
+        [Authorize(Roles = "User", AuthenticationSchemes = "Bearer")]
         [HttpGet("User{id}")]
         public async Task<IActionResult> GetExpensesWithUserId(string id)
         {
@@ -52,7 +52,7 @@ namespace SiteManagement.API.Controllers
         [HttpGet("Debttt")]
         public async Task<IActionResult> GetMonthlyDebt(DateTime startDate, DateTime endDate)
         {
-            var expense = await _expenseService.GetDebtWithDate(startDate,endDate);
+            var expense = await _expenseService.GetDebtWithDate(startDate, endDate);
             return Ok(expense);
         }
 
@@ -78,9 +78,9 @@ namespace SiteManagement.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateExpense(UpdateExpenseDto expense, int id)
+        public async Task<IActionResult> UpdateExpenseAsync(UpdateExpenseDto expense, int id)
         {
-            _expenseService.Update(expense, id);
+            await _expenseService.UpdateAsync(expense, id);
             return Ok();
         }
 

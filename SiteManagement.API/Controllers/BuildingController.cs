@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SiteManagement.API.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class BuildingController : ControllerBase
@@ -48,9 +48,9 @@ namespace SiteManagement.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateBuilding(UpdateBuildingDto building, int id)
+        public async Task<IActionResult> UpdateBuildingAsync(UpdateBuildingDto building, int id)
         {
-            _buildingService.Update(building, id);
+            await _buildingService.UpdateAsync(building, id);
             return Ok();
         }
 

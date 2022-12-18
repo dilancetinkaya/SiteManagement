@@ -28,13 +28,14 @@ namespace SiteManagement.Service.Services
         private const string ExpenseByUsersKey = "EXPENSEUSER";
         private MemoryCacheEntryOptions _cacheOptions;
 
-        public ExpenseService(IExpenseRepository expenseRepository, IMapper mapper, IFlatRepository flatRepository,IMemoryCache memoryCache)
+        public ExpenseService(IExpenseRepository expenseRepository, IMapper mapper, IFlatRepository flatRepository, IMemoryCache memoryCache, IPaymentAPIService paymentAPIService)
         {
             _memoryCache = memoryCache;
             _cacheOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(relative: TimeSpan.FromMinutes(10));
             _expenseRepository = expenseRepository;
             _mapper = mapper;
             _flatRepository = flatRepository;
+            _paymentAPIService = paymentAPIService;
         }
 
         public async Task AddAsync(CreateExpenseDto expenseDto)
@@ -90,20 +91,25 @@ namespace SiteManagement.Service.Services
             _memoryCache.Remove(ExpenseByUsersKey);
         }
 
-        public UpdateExpenseDto Update(UpdateExpenseDto expenseDto, int id)
+        public async Task UpdateAsync(UpdateExpenseDto expenseDto, int id)
         {
-            var updatedExpense = _mapper.Map<Expense>(expenseDto);
+            var expense = await _expenseRepository.GetByIdAsync(id);
 
-            updatedExpense.Id = id;
-            _expenseRepository.Update(updatedExpense);
+            expense.Price = expenseDto.Price;
+            expense.IsPaid = expenseDto.IsPaid;
+            expense.InvoiceDate = expenseDto.InvoiceDate;
+            expense.FlatId = expenseDto.FlatId;
+            expense.ExpenseTypeId = expenseDto.ExpenseTypeId;
+
+            _expenseRepository.Update(expense);
             _memoryCache.Remove(AllExpenseKey);
             _memoryCache.Remove(ExpenseByRelationsKey);
             _memoryCache.Remove(ExpenseByUsersKey);
-            return expenseDto;
+
         }
 
         /// <summary>
-        /// 
+        /// payment api ye ödeme ekleme
         /// </summary>
         public async Task<CreatePaymentDto> AddPayment(CreatePaymentDto createPaymentDto)
         {
@@ -125,7 +131,7 @@ namespace SiteManagement.Service.Services
         }
 
         /// <summary>
-        
+        /// expenseleri iliskili oldugu verilerle getirir
         /// </summary>
         public async Task<ICollection<ExpenseDto>> GetExpensesWithRelations()
         {
@@ -172,10 +178,8 @@ namespace SiteManagement.Service.Services
         }
 
         /// <summary>
-        /// otomatik olarak tüm dairelere borç ekler
+        /// otomatik olarak tüm dairelere borç ekleme
         /// </summary>
-        /// <param name="expenseDto"></param>
-        /// <returns></returns>
         public async Task AddDebtMultiple(DebtMultipleDto expenseDto)
         {
             var flats = _mapper.Map<ICollection<FlatDto>>(await _flatRepository.GetAllAsync());
@@ -194,6 +198,9 @@ namespace SiteManagement.Service.Services
             _memoryCache.Remove(ExpenseByUsersKey);
         }
 
+        /// <summary>
+        /// Verilen tarih araliginda olan expenseleri getirirne
+        /// </summary>
         public async Task<ICollection<ExpenseDto>> GetDebtWithDate(DateTime startDate, DateTime endDate)
         {
             var expenses = await _expenseRepository.GetExpensesWithRelations();

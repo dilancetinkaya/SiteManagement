@@ -76,6 +76,32 @@ namespace SiteManagement.Service.Services
             return flatDto;
         }
 
+        /// <summary>
+        /// Flatleri iliskili oldugu verilerle getirme
+        /// </summary>
+        public async Task<ICollection<FlatDto>> GetAllFlatsByRelations()
+        {
+
+            return await _memoryCache.GetOrCreateAsync(FlatsByRelationsKey, async flatsCache =>
+            {
+                flatsCache.SetOptions(_cacheOptions);
+                var flats = await _flatRepository.GetAllFlatsByRelations();
+
+                var flatDtos = flats.Select(f => new FlatDto()
+                {
+                    Id = f.Id,
+                    FlatNumber = f.FlatNumber,
+                    TypeOfFlat = f.TypeOfFlat,
+                    IsEmpty = f.IsEmpty,
+                    BuildingId = f.BuildingId,
+                    UserId = f.UserId,
+                    FloorNumber = f.FloorNumber,
+                    IsOwner = f.IsOwner,
+                }).ToList();
+                return flatDtos;
+            });
+        }
+
         public async Task RemoveAsync(int id)
         {
             var flat = await _flatRepository.GetByIdAsync(id);
@@ -101,35 +127,9 @@ namespace SiteManagement.Service.Services
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        public async Task<ICollection<FlatDto>> GetAllFlatsByRelations()
-        {
-
-            return await _memoryCache.GetOrCreateAsync(FlatsByRelationsKey, async flatsCache =>
-            {
-                flatsCache.SetOptions(_cacheOptions);
-                var flats = await _flatRepository.GetAllFlatsByRelations();
-
-                var flatDtos = flats.Select(f => new FlatDto()
-                {
-                    Id = f.Id,
-                    FlatNumber = f.FlatNumber,
-                    TypeOfFlat = f.TypeOfFlat,
-                    IsEmpty = f.IsEmpty,
-                    BuildingId = f.BuildingId,
-                    UserId = f.UserId,
-                    FloorNumber = f.FloorNumber,
-                    IsOwner = f.IsOwner,
-                }).ToList();
-                return flatDtos;
-            });
-        }
-
-        /// <summary>
         /// Flatte bulunan kullanıcıyı günceller
         /// </summary>
-        public async Task<UpdateFlatUserDto> UpdateFlatUserAsync(UpdateFlatUserDto flatDto, int id)
+        public async Task UpdateFlatUserAsync(UpdateFlatUserDto flatDto, int id)
         {
             var flat = await _flatRepository.GetByIdAsync(id);
             flat.UserId = flatDto.UserId;
@@ -137,7 +137,6 @@ namespace SiteManagement.Service.Services
             _flatRepository.Update(flat);
             _memoryCache.Remove(FlatsByRelationsKey);
             _memoryCache.Remove(AllFlatsKey);
-            return flatDto;
         }
     }
 }

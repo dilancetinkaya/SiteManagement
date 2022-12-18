@@ -71,13 +71,14 @@ namespace SiteManagement.Service.Services
             _memoryCache.Remove(AllExpenseTypeKey);
         }
 
-        public UpdateExpenseTypeDto Update(UpdateExpenseTypeDto expenseTypeDto, int id)
+        public async Task Update(UpdateExpenseTypeDto expenseTypeDto, int id)
         {
-            var updatedExpenseType = _mapper.Map<ExpenseType>(expenseTypeDto);
-            updatedExpenseType.Id = id;
-            _expenseTypeRepository.Update(updatedExpenseType);
+            var expenseType = await _expenseTypeRepository.GetByIdAsync(id);
+            expenseType.ExpenseTypeName = expenseTypeDto.ExpenseTypeName;
+           
+            _expenseTypeRepository.Update(expenseType);
             _memoryCache.Remove(AllExpenseTypeKey);
-            return expenseTypeDto;
+            
         }
     }
 }

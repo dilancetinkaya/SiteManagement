@@ -74,14 +74,15 @@ namespace SiteManagement.Service.Services
             _memoryCache.Remove(AllBuildingKey);
         }
 
-        public UpdateBuildingDto Update(UpdateBuildingDto buildingDto, int id)
+        public async Task UpdateAsync(UpdateBuildingDto buildingDto, int id)
         {
-            var updatedBuilding = _mapper.Map<Building>(buildingDto);
+            var building = await _buildingRepository.GetByIdAsync(id);
 
-            updatedBuilding.Id = id;
-            _buildingRepository.Update(updatedBuilding);
+            building.BuildingName = buildingDto.BuildingName;
+            building.TotalFlat = buildingDto.TotalFlat;
+            building.BlockId = buildingDto.BlockId;
+            _buildingRepository.Update(building);
             _memoryCache.Remove(AllBuildingKey);
-            return buildingDto;
         }
     }
 }

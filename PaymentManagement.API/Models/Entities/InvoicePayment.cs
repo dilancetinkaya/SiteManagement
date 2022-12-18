@@ -14,6 +14,6 @@ namespace PaymentManagement.API.Models.Entities
         public int Cvv { get; set; }
         public int FlatId { get; set; }
         public int ExpenseId { get; set; }
-        public decimal InvoiceAmount { get; set; }
+        public double InvoiceAmount { get; set; }
     }
 }

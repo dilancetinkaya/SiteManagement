@@ -92,13 +92,14 @@ namespace SiteManagement.Service.Services
             _memoryCache.Remove(AllMessageKey);
         }
 
-        public UpdateMessageDto Update(UpdateMessageDto messageDto, int id)
+        public async Task UpdateAsync(UpdateMessageDto messageDto, int id)
         {
-            var updatedMessage = _mapper.Map<Message>(messageDto);
-            updatedMessage.Id = id;
-            _messageRepository.Update(updatedMessage);
+            var message = await _messageRepository.GetByIdAsync(id);
+
+            message.MessageContent = messageDto.MessageContent;
+            message.IsRead = messageDto.IsRead;
+            _messageRepository.Update(message);
             _memoryCache.Remove(AllMessageKey);
-            return messageDto;
         }
     }
 }

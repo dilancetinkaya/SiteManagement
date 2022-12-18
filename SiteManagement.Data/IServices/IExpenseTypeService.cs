@@ -11,6 +11,6 @@ namespace SiteManagement.Infrastructure.IServices
         Task AddAsync(CreateExpenseTypeDto expenseTypeDto);
         Task<ICollection<CreateExpenseTypeDto>> AddRangeAsync(ICollection<CreateExpenseTypeDto> expenseTypeDtos);
         Task RemoveAsync(int id);
-        UpdateExpenseTypeDto Update(UpdateExpenseTypeDto expenseTypeDto, int id);
+        Task Update(UpdateExpenseTypeDto expenseTypeDto, int id);
     }
 }

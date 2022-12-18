@@ -22,7 +22,7 @@ namespace SiteManagement.Application.Services
         }
         public async Task<ApiResponse<string>> CreatePayment(CreatePaymentDto createPaymentDto)
         {
-            const string requestUri = "http://localhost:29161/api/payment/createpayment";
+            const string requestUri = "https://localhost:5001/api/Payment/CreatePayment";
 
             string requestJson = JsonConvert.SerializeObject(createPaymentDto);
 

@@ -35,7 +35,7 @@ namespace PaymentManagement.API.Controllers
         public async Task<IActionResult> GetAll()
         {
             var creditcartfan = await _paymentService.GetAllCreditİnfo();
-            return Ok();
+            return Ok(creditcartfan);
 
         }
       

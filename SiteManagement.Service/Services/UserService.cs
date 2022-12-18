@@ -23,10 +23,9 @@ namespace SiteManagement.Service.Services
         private readonly IMemoryCache _memoryCache;
         private const string AllUserKey = "USERALL";
         private MemoryCacheEntryOptions _cacheOptions;
-        private readonly RoleManager<Role> _roleManager;
 
         public UserService(UserManager<User> userManager, IMapper mapper, SignInManager<User> signInManager,
-                           IConfiguration configuration, IMemoryCache memoryCache, RoleManager<Role> roleManager)
+                           IConfiguration configuration, IMemoryCache memoryCache)
         {
             _memoryCache = memoryCache;
             _cacheOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(relative: TimeSpan.FromMinutes(10));
@@ -34,7 +33,7 @@ namespace SiteManagement.Service.Services
             _mapper = mapper;
             _signInManager = signInManager;
             _configuration = configuration;
-            _roleManager = roleManager;
+
         }
 
         public async Task AddAsync(CreateUserDto userDto)
@@ -97,11 +96,12 @@ namespace SiteManagement.Service.Services
         {
             var signUser = await _signInManager.PasswordSignInAsync(user.Email, user.Password, false, false);
 
-
             if (signUser is null) return string.Empty;
-           var userByEmnail= await _userManager.FindByEmailAsync(user.Email);
-          var userRole= await _userManager.GetRolesAsync(userByEmnail);
-            var token = GenerateJwt.GetJwtToken(user.Email,userRole.First(), _configuration["Jwt:Key"],
+
+            var userByEmnail = await _userManager.FindByEmailAsync(user.Email);
+            var userRole = await _userManager.GetRolesAsync(userByEmnail);
+
+            var token = GenerateJwt.GetJwtToken(user.Email, userRole.First(), _configuration["Jwt:Key"],
                        _configuration["Jwt:Issuer"], _configuration["Jwt:Audience"],
                        TimeSpan.FromDays(Double.Parse(_configuration["Jwt:ExpirationInDays"]))).ToString();
             return token;

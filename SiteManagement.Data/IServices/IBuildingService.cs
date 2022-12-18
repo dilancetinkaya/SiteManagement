@@ -11,6 +11,6 @@ namespace SiteManagement.Infrastructure.IServices
         Task AddAsync(CreateBuildingDto buildingDto);
         Task<ICollection<CreateBuildingDto>> AddRangeAsync(ICollection<CreateBuildingDto> buildingDtos);
         Task RemoveAsync(int id);
-        UpdateBuildingDto Update(UpdateBuildingDto buildingDto, int id);
+        Task UpdateAsync(UpdateBuildingDto buildingDto, int id);
     }
 }

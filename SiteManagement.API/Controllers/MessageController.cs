@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SiteManagement.API.Controllers
 {
-   
+    [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class MessageController : ControllerBase
@@ -36,14 +36,14 @@ namespace SiteManagement.API.Controllers
         [HttpGet("Receiver/{id}")]
         public async Task<IActionResult> GetMessageByReceivedIdAsync(string id, DateTime? startDate, DateTime? endDate)
         {
-            var receivedMessages =await _messageService.GetMessageByReceivedId(id,startDate,endDate);
+            var receivedMessages = await _messageService.GetMessageByReceivedId(id, startDate, endDate);
             return Ok(receivedMessages);
         }
 
         [HttpGet("Sender/{id}")]
         public async Task<IActionResult> GetMessageBySendIdAsync(string id, DateTime? startDate, DateTime? endDate)
         {
-            var sendMessages = await _messageService.GetMessageBySendId(id,startDate,endDate);
+            var sendMessages = await _messageService.GetMessageBySendId(id, startDate, endDate);
             return Ok(sendMessages);
         }
 
@@ -55,9 +55,9 @@ namespace SiteManagement.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateMessage(UpdateMessageDto message, int id)
+        public async Task<IActionResult> UpdateMessageAsync(UpdateMessageDto message, int id)
         {
-            _messageService.Update(message, id);
+            await _messageService.UpdateAsync(message, id);
             return Ok();
         }
 

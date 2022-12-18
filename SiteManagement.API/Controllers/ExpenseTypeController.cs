@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SiteManagement.API.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class ExpenseTypeController : ControllerBase
@@ -48,9 +48,9 @@ namespace SiteManagement.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateExpenseType(UpdateExpenseTypeDto expenseType, int id)
+        public async Task<IActionResult> UpdateExpenseTypeAsync(UpdateExpenseTypeDto expenseType, int id)
         {
-            _expenseTypeService.Update(expenseType, id);
+            await _expenseTypeService.Update(expenseType, id);
             return Ok();
         }
 

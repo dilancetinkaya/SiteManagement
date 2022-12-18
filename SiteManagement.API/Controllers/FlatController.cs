@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SiteManagement.API.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class FlatController : ControllerBase
@@ -55,9 +55,9 @@ namespace SiteManagement.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public  IActionResult UpdateFlatAsync(UpdateFlatDto flat, int id)
+        public async Task<IActionResult> UpdateFlatAsync(UpdateFlatDto flat, int id)
         {
-             _flatService.UpdateAsync(flat, id);
+            await _flatService.UpdateAsync(flat, id);
             return Ok();
         }
         [HttpPut("User{id}")]

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SiteManagement.Domain.PaymentApiModel;
 using SiteManagement.Infrastructure.IServices;
 using SiteManagement.Infrastructure.IServices.APIServices;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace SiteManagement.API.Controllers
 {
+    [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class PaymentController : ControllerBase
@@ -20,7 +22,6 @@ namespace SiteManagement.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreatePayment(CreatePaymentDto createPaymentDto)
         {
-
            await _expenseService.AddPayment(createPaymentDto);
             return Ok();
         }
