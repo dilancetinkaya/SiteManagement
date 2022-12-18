@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SiteManagement.Domain.PaymentApiModel;
 using SiteManagement.Infrastructure.IServices;
-using SiteManagement.Infrastructure.IServices.APIServices;
 using System.Threading.Tasks;
 
 namespace SiteManagement.API.Controllers
@@ -22,7 +21,7 @@ namespace SiteManagement.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreatePayment(CreatePaymentDto createPaymentDto)
         {
-           await _expenseService.AddPayment(createPaymentDto);
+            await _expenseService.AddPayment(createPaymentDto);
             return Ok();
         }
     }

@@ -45,7 +45,6 @@ namespace SiteManagement.Service.Services
 
             await _userManager.AddToRoleAsync(user, "User");
             _memoryCache.Remove(AllUserKey);
-
         }
 
         public async Task<ICollection<UserDto>> GetAllAsync()

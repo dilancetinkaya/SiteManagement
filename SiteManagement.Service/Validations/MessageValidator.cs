@@ -11,8 +11,7 @@ namespace SiteManagement.Application.Validations
                                           .NotEmpty().WithMessage("Message Context is required");
             RuleFor(x => x.SenderId).NotNull().WithMessage("Sender Id is required")
                                          .NotEmpty().WithMessage("Sender Id is required");
-            RuleFor(x => x.ReceiverId).NotNull().WithMessage("Receiver Id is required")
-                                         .NotEmpty().WithMessage("Receiver Id is required");
+         
 
         }
     }

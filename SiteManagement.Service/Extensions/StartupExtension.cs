@@ -13,7 +13,6 @@ using SiteManagement.Infrastructure.IServices.APIServices;
 using SiteManagement.Infrastructure.Repositories;
 using SiteManagement.Service.Services;
 using System;
-using System.Reflection;
 
 namespace SiteManagement.Application.Extensions
 {
@@ -43,9 +42,9 @@ namespace SiteManagement.Application.Extensions
             services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRoleService, RoleService>();
-           
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-           
+
 
             return services;
         }

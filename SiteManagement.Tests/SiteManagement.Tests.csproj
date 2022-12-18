@@ -20,4 +20,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SiteManagement.Core\SiteManagement.Domain.csproj" />
+    <ProjectReference Include="..\SiteManagement.Service\SiteManagement.Application.csproj" />
+  </ItemGroup>
+
 </Project>

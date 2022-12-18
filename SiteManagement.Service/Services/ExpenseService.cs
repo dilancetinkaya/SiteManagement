@@ -82,8 +82,7 @@ namespace SiteManagement.Service.Services
         public async Task RemoveAsync(int id)
         {
             var expense = await _expenseRepository.GetByIdAsync(id);
-
-            if (expense is null) throw new Exception("Expense is not found");
+if (expense is null) throw new Exception("Expense is not found");
 
             _expenseRepository.Remove(expense);
             _memoryCache.Remove(AllExpenseKey);
@@ -101,7 +100,6 @@ namespace SiteManagement.Service.Services
             expense.InvoiceDate = expenseDto.InvoiceDate;
             expense.FlatId = expenseDto.FlatId;
             expense.ExpenseTypeId = expenseDto.ExpenseTypeId;
-
             _expenseRepository.Update(expense);
             _memoryCache.Remove(AllExpenseKey);
             _memoryCache.Remove(ExpenseByRelationsKey);
@@ -184,7 +182,7 @@ namespace SiteManagement.Service.Services
         /// </summary>
         public async Task AddDebtMultiple(DebtMultipleDto expenseDto)
         {
-            var flats = _mapper.Map<ICollection<FlatDto>>(await _flatRepository.GetAllAsync());
+            var flats = _mapper.Map<ICollection<FlatDto>>(await _flatRepository.GetWhereAsync(x=>x.Building.BlockId==));
 
             var expenseDtoList = flats.Select(f => new CreateExpenseDto()
             {

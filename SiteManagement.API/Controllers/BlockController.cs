@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace SiteManagement.API.Controllers
 {
     [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
-    [Route("api/[controller]")]
+    [Route("api/blocks")]
     [ApiController]
     public class BlockController : ControllerBase
     {
@@ -19,7 +19,7 @@ namespace SiteManagement.API.Controllers
             _blockService = blockService;
         }
 
-        [HttpGet("List")]
+        [HttpGet]
         public async Task<IActionResult> GetBlock()
         {
             var blockList = await _blockService.GetAllAsync();

@@ -36,14 +36,12 @@ namespace SiteManagement.Service.Services
             var building = await _buildingService.GetByIdAsync(flatDto.BuildingId);
 
             var totalFlat = (await _flatRepository.GetWhereAsync(x => x.BuildingId == flatDto.BuildingId)).Count();
-            if (building.TotalFlat< totalFlat) throw new Exception("Building is full, no more flats can be added");
+            if (building.TotalFlat < totalFlat) throw new Exception("Building is full, no more flats can be added");
 
             var flat = _mapper.Map<Flat>(flatDto);
             await _flatRepository.AddAsync(flat);
             _memoryCache.Remove(FlatsByRelationsKey);
             _memoryCache.Remove(AllFlatsKey);
-
-
         }
 
         public async Task<ICollection<CreateFlatDto>> AddRangeAsync(ICollection<CreateFlatDto> flatDtos)
@@ -124,7 +122,6 @@ namespace SiteManagement.Service.Services
             _flatRepository.Update(flat);
             _memoryCache.Remove(FlatsByRelationsKey);
             _memoryCache.Remove(AllFlatsKey);
-            
         }
 
         /// <summary>

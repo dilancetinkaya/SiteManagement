@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SiteManagement.Domain.PaymentApiModel;
 using SiteManagement.Infrastructure.IServices.APIServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;

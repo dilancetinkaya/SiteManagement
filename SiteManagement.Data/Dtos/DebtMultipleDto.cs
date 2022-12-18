@@ -8,5 +8,6 @@ namespace SiteManagement.Infrastructure.Dtos
         public double Price { get; set; }
         public DateTime InvoiceDate { get; set; }
         public int ExpenseTypeId { get; set; }
+        //block
     }
 }

@@ -53,7 +53,7 @@ namespace SiteManagement.API.Controllers
         }
 
         [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
-        [HttpGet("Date")]
+        [HttpGet("Search")]
         public async Task<IActionResult> GetDebtWithDate(DateTime startDate, DateTime endDate)
         {
             var expense = await _expenseService.GetDebtWithDate(startDate, endDate);
