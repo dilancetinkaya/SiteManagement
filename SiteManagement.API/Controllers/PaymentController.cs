@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SiteManagement.API.Controllers
 {
     [Authorize(Roles = "Admin,User", AuthenticationSchemes = "Bearer")]
-    [Route("api/[controller]")]
+    [Route("api/payments")]
     [ApiController]
     public class PaymentController : ControllerBase
     {

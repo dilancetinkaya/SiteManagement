@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace SiteManagement.API.Controllers
 {
     [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
-    [Route("api/[controller]")]
+    [Route("api/expensetypes")]
     [ApiController]
     public class ExpenseTypeController : ControllerBase
     {
@@ -19,7 +19,7 @@ namespace SiteManagement.API.Controllers
             _expenseTypeService = expenseTypeService;
         }
 
-        [HttpGet("List")]
+        [HttpGet]
         public async Task<IActionResult> GetExpenseType()
         {
             var expenseTypes = await _expenseTypeService.GetAllAsync();

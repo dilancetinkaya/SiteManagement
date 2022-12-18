@@ -3,6 +3,6 @@
     public class UpdateMessageDto
     {
         public string MessageContent { get; set; }
-        public bool IsRead { get; set; }
+        public bool IsRead { get; set; } = false;
     }
 }

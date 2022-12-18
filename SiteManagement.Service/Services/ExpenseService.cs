@@ -2,6 +2,7 @@
 using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using MimeKit;
 using SiteManagement.Domain.Entities;
 using SiteManagement.Domain.IRepositories;
@@ -23,15 +24,18 @@ namespace SiteManagement.Service.Services
         private readonly IFlatRepository _flatRepository;
         private readonly IMapper _mapper;
         private readonly IMemoryCache _memoryCache;
+        private readonly IConfiguration _configuration;
         private const string AllExpenseKey = "EXPENSEALL";
         private const string ExpenseByRelationsKey = "EXPENSERELATİONS";
         private const string ExpenseByUsersKey = "EXPENSEUSER";
         private MemoryCacheEntryOptions _cacheOptions;
 
-        public ExpenseService(IExpenseRepository expenseRepository, IMapper mapper, IFlatRepository flatRepository, IMemoryCache memoryCache, IPaymentAPIService paymentAPIService)
+        public ExpenseService(IExpenseRepository expenseRepository, IMapper mapper, IFlatRepository flatRepository,
+                             IMemoryCache memoryCache, IPaymentAPIService paymentAPIService, IConfiguration configuration)
         {
             _memoryCache = memoryCache;
-            _cacheOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(relative: TimeSpan.FromMinutes(10));
+            _configuration = configuration;
+            _cacheOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(relative: TimeSpan.FromMinutes(5));
             _expenseRepository = expenseRepository;
             _mapper = mapper;
             _flatRepository = flatRepository;
@@ -82,7 +86,7 @@ namespace SiteManagement.Service.Services
         public async Task RemoveAsync(int id)
         {
             var expense = await _expenseRepository.GetByIdAsync(id);
-if (expense is null) throw new Exception("Expense is not found");
+            if (expense is null) throw new Exception("Expense is not found");
 
             _expenseRepository.Remove(expense);
             _memoryCache.Remove(AllExpenseKey);
@@ -182,7 +186,7 @@ if (expense is null) throw new Exception("Expense is not found");
         /// </summary>
         public async Task AddDebtMultiple(DebtMultipleDto expenseDto)
         {
-            var flats = _mapper.Map<ICollection<FlatDto>>(await _flatRepository.GetWhereAsync(x=>x.Building.BlockId==));
+            var flats = _mapper.Map<ICollection<FlatDto>>(await _flatRepository.GetWhereAsync(x => x.Building.BlockId == expenseDto.BlockId));
 
             var expenseDtoList = flats.Select(f => new CreateExpenseDto()
             {
@@ -239,7 +243,7 @@ if (expense is null) throw new Exception("Expense is not found");
 
                 SmtpClient client = new();
                 client.Connect("smtp.gmail.com", 587, false);
-                client.Authenticate("dilancetinkaya007@gmail.com", "syfgerdrnqeslexp");
+                client.Authenticate(_configuration["EmailSend:Email"], _configuration["EmailSend:Password"]);
                 client.Send(mimeMessage);
             }
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SiteManagement.API.Controllers
 {
     [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
-    [Route("api/[controller]")]
+    [Route("api/users")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -36,7 +36,7 @@ namespace SiteManagement.API.Controllers
         }
 
 
-        [HttpGet("List")]
+        [HttpGet]
         public async Task<IActionResult> GetUser()
         {
             var users = await _userService.GetAllAsync();

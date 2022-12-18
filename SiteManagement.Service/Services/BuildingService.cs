@@ -31,6 +31,7 @@ namespace SiteManagement.Service.Services
             var building = _mapper.Map<Building>(buildingDto);
 
             await _buildingRepository.AddAsync(building);
+
             _memoryCache.Remove(AllBuildingKey);
         }
 
@@ -39,7 +40,9 @@ namespace SiteManagement.Service.Services
             var buildings = _mapper.Map<ICollection<Building>>(buildingDtos);
 
             await _buildingRepository.AddRangeAsync(buildings);
+
             _memoryCache.Remove(AllBuildingKey);
+
             return buildingDtos;
         }
 
@@ -48,8 +51,8 @@ namespace SiteManagement.Service.Services
             return await _memoryCache.GetOrCreateAsync(AllBuildingKey, async flatsCache =>
             {
                 flatsCache.SetOptions(_cacheOptions);
-                var buildings = await _buildingRepository.GetAllAsync();
 
+                var buildings = await _buildingRepository.GetAllAsync();
                 return _mapper.Map<ICollection<BuildingDto>>(buildings);
             });
         }
@@ -61,6 +64,7 @@ namespace SiteManagement.Service.Services
             if (building is null) throw new Exception("Building is not found");
 
             var buildingDto = _mapper.Map<BuildingDto>(building);
+
             return buildingDto;
         }
 
@@ -71,6 +75,7 @@ namespace SiteManagement.Service.Services
             if (building is null) throw new Exception("Building is not found");
 
             _buildingRepository.Remove(building);
+
             _memoryCache.Remove(AllBuildingKey);
         }
 

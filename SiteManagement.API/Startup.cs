@@ -113,7 +113,6 @@ namespace SiteManagement.API
             services.DependencyExtension(Configuration);
             services.AddHangfire(x => x.UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection")));
 
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

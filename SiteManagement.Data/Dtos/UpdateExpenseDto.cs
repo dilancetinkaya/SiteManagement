@@ -4,7 +4,7 @@ namespace SiteManagement.Infrastructure.Dtos
 {
     public class UpdateExpenseDto
     {
-        public bool IsPaid { get; set; }
+        public bool IsPaid { get; set; } = false;
         public double Price { get; set; }
         public DateTime InvoiceDate { get; set; }
         public int FlatId { get; set; }

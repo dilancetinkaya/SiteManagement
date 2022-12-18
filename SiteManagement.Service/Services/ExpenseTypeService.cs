@@ -21,7 +21,7 @@ namespace SiteManagement.Service.Services
         public ExpenseTypeService(IExpenseTypeRepository expenseTypeRepository, IMapper mapper, IMemoryCache memoryCache)
         {
             _memoryCache = memoryCache;
-            _cacheOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(relative: TimeSpan.FromMinutes(10));
+            _cacheOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(relative: TimeSpan.FromMinutes(20));
             _expenseTypeRepository = expenseTypeRepository;
             _mapper = mapper;
         }
@@ -79,7 +79,6 @@ namespace SiteManagement.Service.Services
             expenseType.ExpenseTypeName = expenseTypeDto.ExpenseTypeName;
             _expenseTypeRepository.Update(expenseType);
             _memoryCache.Remove(AllExpenseTypeKey);
-            
         }
     }
 }

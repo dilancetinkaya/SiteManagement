@@ -14,6 +14,7 @@ namespace SiteManagement.Service.Services
     {
         private readonly IBlockRepository _blockRepository;
         private readonly IMapper _mapper;
+
         private readonly IMemoryCache _memoryCache;
         private const string AllBlockKey = "BLOCKALL";
         private MemoryCacheEntryOptions _cacheOptions;
@@ -29,7 +30,7 @@ namespace SiteManagement.Service.Services
         public async Task AddAsync(CreateBlockDto blockDto)
         {
             var block = _mapper.Map<Block>(blockDto);
-            
+
             await _blockRepository.AddAsync(block);
             _memoryCache.Remove(AllBlockKey);
         }
@@ -58,7 +59,6 @@ namespace SiteManagement.Service.Services
             var block = await _blockRepository.GetByIdAsync(id);
 
             if (block is null) throw new Exception("Block is not found");
-
             return _mapper.Map<BlockDto>(block);
         }
 
@@ -78,7 +78,7 @@ namespace SiteManagement.Service.Services
 
             if (block is null) throw new Exception("Block is not found");
 
-            block.BlockName=blockDto.BlockName;
+            block.BlockName = blockDto.BlockName;
             _blockRepository.Update(block);
             _memoryCache.Remove(AllBlockKey);
         }

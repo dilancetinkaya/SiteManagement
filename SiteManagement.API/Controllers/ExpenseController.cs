@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace SiteManagement.API.Controllers
 {
 
-    [Route("api/[controller]")]
+    [Route("api/expenses")]
     [ApiController]
     public class ExpenseController : ControllerBase
     {
@@ -21,7 +21,7 @@ namespace SiteManagement.API.Controllers
         }
 
         [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
-        [HttpGet("List")]
+        [HttpGet]
         public async Task<IActionResult> GetExpense()
         {
             var expenses = await _expenseService.GetAllAsync();
@@ -77,7 +77,7 @@ namespace SiteManagement.API.Controllers
         }
 
         [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
-        [HttpPost("UsersDebt")]
+        [HttpPost("DebtPerBlock")]
         public async Task<IActionResult> AddDebtMultiple(DebtMultipleDto expense)
         {
             await _expenseService.AddDebtMultiple(expense);

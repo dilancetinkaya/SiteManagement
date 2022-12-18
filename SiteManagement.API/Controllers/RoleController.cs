@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace SiteManagement.API.Controllers
 {
     [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
-    [Route("api/[controller]")]
+    [Route("api/roles")]
     [ApiController]
     public class RoleController : ControllerBase
     {

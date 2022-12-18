@@ -2,7 +2,7 @@
 {
     public class UpdateFlatUserDto
     {
-        public bool IsOwner { get; set; }
+        public bool IsOwner { get; set; } = false;
         public string UserId { get; set; }
     }
 }

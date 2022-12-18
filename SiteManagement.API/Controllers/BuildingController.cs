@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace SiteManagement.API.Controllers
 {
     [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
-    [Route("api/[controller]")]
+    [Route("api/buildings")]
     [ApiController]
     public class BuildingController : ControllerBase
     {
@@ -19,7 +19,7 @@ namespace SiteManagement.API.Controllers
             _buildingService = buildingService;
         }
 
-        [HttpGet("List")]
+        [HttpGet]
         public async Task<IActionResult> GetBuilding()
         {
             var buildings = await _buildingService.GetAllAsync();
@@ -30,6 +30,7 @@ namespace SiteManagement.API.Controllers
         public async Task<IActionResult> GetBuildingById(int id)
         {
             var building = await _buildingService.GetByIdAsync(id);
+
             return Ok(building);
         }
 
@@ -37,6 +38,7 @@ namespace SiteManagement.API.Controllers
         public async Task<IActionResult> AddBuilding(CreateBuildingDto building)
         {
             await _buildingService.AddAsync(building);
+
             return Ok(building);
         }
 
@@ -44,6 +46,7 @@ namespace SiteManagement.API.Controllers
         public async Task<IActionResult> AddBuildingMultiple(ICollection<CreateBuildingDto> buildings)
         {
             await _buildingService.AddRangeAsync(buildings);
+
             return Ok(buildings);
         }
 

@@ -21,10 +21,11 @@ namespace SiteManagement.Service.Services
         private const string AllMessageKey = "MESSAGEALL";
         private MemoryCacheEntryOptions _cacheOptions;
 
-        public MessageService(IMessageRepository messageRepository, IMapper mapper, UserManager<User> userManager, IMemoryCache memoryCache)
+        public MessageService(IMessageRepository messageRepository, IMapper mapper, UserManager<User> userManager,
+                              IMemoryCache memoryCache)
         {
             _memoryCache = memoryCache;
-            _cacheOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(relative: TimeSpan.FromMinutes(10));
+            _cacheOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(relative: TimeSpan.FromMinutes(5));
             _messageRepository = messageRepository;
             _userManager = userManager;
             _mapper = mapper;

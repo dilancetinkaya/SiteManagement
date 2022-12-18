@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace SiteManagement.API.Controllers
 {
     [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
-    [Route("api/[controller]")]
+    [Route("api/flats")]
     [ApiController]
     public class FlatController : ControllerBase
     {
@@ -19,7 +19,7 @@ namespace SiteManagement.API.Controllers
             _flatService = flatService;
         }
 
-        [HttpGet("List")]
+        [HttpGet]
         public async Task<IActionResult> GetFlat()
         {
             var flats = await _flatService.GetAllAsync();

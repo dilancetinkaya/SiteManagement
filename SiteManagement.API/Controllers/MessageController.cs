@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace SiteManagement.API.Controllers
 {
     [Authorize(Roles = "Admin,User", AuthenticationSchemes = "Bearer")]
-    [Route("api/[controller]")]
+    [Route("api/messages")]
     [ApiController]
     public class MessageController : ControllerBase
     {
@@ -19,7 +19,7 @@ namespace SiteManagement.API.Controllers
             _messageService = messageService;
         }
 
-        [HttpGet("List")]
+        [HttpGet]
         public async Task<IActionResult> GetMessage()
         {
             var messages = await _messageService.GetAllAsync();

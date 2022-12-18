@@ -17,14 +17,15 @@ namespace SiteManagement.Service.Services
         private readonly IBuildingService _buildingService;
         private readonly IMapper _mapper;
         private readonly IMemoryCache _memoryCache;
-        private const string FlatsByRelationsKey = "FLATSRELATİONS";
+        private const string FlatsByRelationsKey = "FLATSRELATIONS";
         private const string AllFlatsKey = "FLATSALL";
         private MemoryCacheEntryOptions _cacheOptions;
 
-        public FlatService(IFlatRepository flatRepository, IMapper mapper, IBuildingService buildingService, IMemoryCache memoryCache)
+        public FlatService(IFlatRepository flatRepository, IMapper mapper, IBuildingService buildingService,
+                          IMemoryCache memoryCache)
         {
             _memoryCache = memoryCache;
-            _cacheOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(relative: TimeSpan.FromMinutes(10));
+            _cacheOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(relative: TimeSpan.FromMinutes(5));
             _flatRepository = flatRepository;
             _buildingService = buildingService;
             _mapper = mapper;
