@@ -26,8 +26,10 @@ Site Management, site yöneticilerinin hayatlarını kolaylaştırmayı hedefley
 
 -Veritabanını oluşturmak için; Projeyi açıp set as start up project olarak SiteManagement.API olarak belirleyin. Daha sonra package manager console’unda varsayılan proje olarak SiteManagement.Infrastructure seçin ve update-database komutunu girin.
 
+-Hangfire ile mail gönderim işleminin sağlanabilmesi için SiteManagement.API'de bulunan **appsettings.json** belgesi içindeki **EmailSend** kısmının detayları (Email, Password) doldurulmalıdır. Password bilgisi için ilgili linki inceleyebilirsiniz. ([19. dakikadan itibaren anlatılıyor.](https://www.youtube.com/watch?v=WXI_kS17rDs&t=1445s)) 
+
 -Projeyi çalıştırmak için solution ayarlarından Multiple Startup Project olarak PaymentManagement.API ve SiteManagement.API projelerini seçin. İki projenin aynı anda çalışabilmesi için port bilgilerinizi güncelleyin.
 
 <h2> 🛠 &nbsp;Kullanılan Teknolojiler</h2>
-ASP.Net 5, MongoDb, Sql Server, Entity Framework, Identity, Fluent Validation, AutoMapper, Hangfire, IMemoryCache
+ASP.Net 5, MongoDb, Sql Server, Entity Framework, Identity, Fluent Validation, AutoMapper, Hangfire,Cache
     
