@@ -230,7 +230,7 @@ namespace SiteManagement.Service.Services
 
 
                 MimeMessage mimeMessage = new();
-                MailboxAddress mailboxAddressFrom = new("Site Administrator", "dilancetinkaya007@gmail.com");
+                MailboxAddress mailboxAddressFrom = new("Site Administrator", _configuration["EmailSend:Email"]);
                 mimeMessage.From.Add(mailboxAddressFrom);
 
                 MailboxAddress mailboxAddressTo = new("User", email);
