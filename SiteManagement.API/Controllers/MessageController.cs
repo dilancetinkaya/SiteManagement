@@ -33,14 +33,14 @@ namespace SiteManagement.API.Controllers
             return Ok(message);
         }
 
-        [HttpGet("Receiver/{id}")]
+        [HttpGet("receiver/{id}")]
         public async Task<IActionResult> GetMessageByReceivedIdAsync(string id, DateTime? startDate, DateTime? endDate)
         {
             var receivedMessages = await _messageService.GetMessageByReceivedId(id, startDate, endDate);
             return Ok(receivedMessages);
         }
 
-        [HttpGet("Sender/{id}")]
+        [HttpGet("sender/{id}")]
         public async Task<IActionResult> GetMessageBySendIdAsync(string id, DateTime? startDate, DateTime? endDate)
         {
             var sendMessages = await _messageService.GetMessageBySendId(id, startDate, endDate);

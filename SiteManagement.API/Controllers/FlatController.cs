@@ -33,7 +33,7 @@ namespace SiteManagement.API.Controllers
             return Ok(flat);
         }
 
-        [HttpGet("Relation")]
+        [HttpGet("relation")]
         public async Task<IActionResult> GetFlatByRelations()
         {
             var flats = await _flatService.GetAllFlatsByRelations();
@@ -47,7 +47,7 @@ namespace SiteManagement.API.Controllers
             return Ok(flat);
         }
 
-        [HttpPost("Bulk")]
+        [HttpPost("bulk")]
         public async Task<IActionResult> AddFlatMultiple(ICollection<CreateFlatDto> flats)
         {
             await _flatService.AddRangeAsync(flats);
@@ -60,7 +60,7 @@ namespace SiteManagement.API.Controllers
             await _flatService.UpdateAsync(flat, id);
             return Ok();
         }
-        [HttpPut("Users/{id}")]
+        [HttpPut("users/{id}")]
         public async Task<IActionResult> UpdateUserFlatAsync(UpdateFlatUserDto flat, int id)
         {
             await _flatService.UpdateFlatUserAsync(flat, id);

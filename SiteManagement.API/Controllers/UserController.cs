@@ -17,7 +17,7 @@ namespace SiteManagement.API.Controllers
         {
             _userService = userService;
         }
-        [HttpPost("Login")]
+        [HttpPost("login")]
 
         [AllowAnonymous]
         public async Task<IActionResult> LoginAsync(LoginUserDto user)
@@ -27,7 +27,7 @@ namespace SiteManagement.API.Controllers
 
             return Ok(loginUser);
         }
-        [HttpGet("Logout")]
+        [HttpGet("logout")]
         [AllowAnonymous]
         public IActionResult Logout()
         {

@@ -42,7 +42,7 @@ namespace SiteManagement.API.Controllers
             return Ok(building);
         }
 
-        [HttpPost("Bulk")]
+        [HttpPost("bulk")]
         public async Task<IActionResult> AddBuildingMultiple(ICollection<CreateBuildingDto> buildings)
         {
             await _buildingService.AddRangeAsync(buildings);
